@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0F0F0F">
+    <meta name="description" content="YouTube Background Audio Engine">
+    <title>YouTube Audio PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192.png?text=YouTube">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --yt-black: #0F0F0F;
+            --yt-white: #FFFFFF;
+            --yt-red: #FF0000;
+            --yt-dark-red: #990000;
+            --yt-gray: #F8F9FA;
+            --dark-gray: #606060;
+            --card-radius: 20px;
+            --element-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--yt-black);
+            color: var(--yt-white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Soft Neo-Brutalist Main Component Frame */
+        .app-card {
+            background: var(--yt-white);
+            color: var(--yt-black);
+            border: 2px solid var(--yt-black);
+            border-radius: var(--card-radius);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            width: 100%;
+            max-width: 420px;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* YouTube Brand Architecture Layout Realignment */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            user-select: none;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .yt-icon {
+            display: block;
+            height: 22px;
+            width: auto;
+        }
+
+        .yt-wordmark {
+            fill: var(--yt-black);
+            height: 20px;
+            width: auto;
+            margin-top: 1px;
+        }
+
+        .pwa-badge {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: var(--yt-black);
+            color: var(--yt-white);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        /* UI Input Layout */
+        .input-wrapper {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: var(--yt-gray);
+            color: var(--yt-black);
+            border: 2px solid var(--yt-black);
+            border-radius: var(--element-radius);
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            background: var(--yt-white);
+            box-shadow: 3px 3px 0px 0px var(--yt-black);
+        }
+
+        /* Animated Dynamic Border Container */
+        .btn-container {
+            position: relative;
+            width: 100%;
+            border-radius: calc(var(--element-radius) + 2px);
+            padding: 3px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        /* Flows a dual red gradient layer across the bounding container layout upon request */
+        .btn-container.loading-active {
+            background: linear-gradient(90deg, var(--yt-red), #ff6b6b, var(--yt-dark-red), var(--yt-red));
+            background-size: 300% 100%;
+            animation: flowingOutline 2s linear infinite;
+        }
+
+        @keyframes flowingOutline {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Main Call To Action Button Layout */
+        button {
+            width: 100%;
+            background: var(--yt-black);
+            color: var(--yt-white);
+            border: 2px solid var(--yt-black);
+            border-radius: var(--element-radius);
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.15);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        button:disabled {
+            background: var(--yt-white);
+            color: var(--yt-black);
+            border-color: transparent;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Polished Spinner Integration */
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            border-top-color: var(--yt-black);
+            animation: spin 0.65s cubic-bezier(0.6, 0.2, 0.2, 0.8) infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* High Visibility Low Contrast Feedbacks */
+        .status-terminal {
+            margin-top: 20px;
+            background: var(--yt-gray);
+            color: var(--yt-black);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 14px;
+            border: 2px solid var(--yt-black);
+            border-radius: var(--element-radius);
+            min-height: 48px;
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-terminal.error {
+            background: #fff5f5;
+            color: var(--yt-red);
+            border-color: var(--yt-red);
+        }
+
+        .status-terminal.idle {
+            color: #555555;
+        }
+
+        /* Asset Meta Block */
+        .meta-display {
+            display: none;
+            margin-top: 20px;
+            border-top: 2px dashed rgba(0, 0, 0, 0.15);
+            padding-top: 25px;
+            text-align: left;
+        }
+
+        .meta-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--yt-black);
+            line-clamp: 2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .meta-author {
+            font-size: 14px;
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+
+        /* Embedded Audio Pipeline Deck */
+        .deck-wrapper {
+            display: none;
+            margin-top: 18px;
+        }
+
+        audio {
+            width: 100%;
+            height: 44px;
+            border-radius: var(--element-radius);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <div class="brand-header">
+            <div class="logo-group">
+                <svg class="yt-icon" viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#FF0000" d="M26.97 2.84c-.31-1.16-1.22-2.07-2.38-2.38C22.48 0 13.71 0 13.71 0S4.95 0 2.84.46C1.68.77.77 1.68.46 2.84 0 4.95 0 10 0 10s0 5.05.46 7.16c.31 1.16 1.22 2.07 2.38 2.38 2.11.46 10.87.46 10.87.46s8.77 0 10.88-.46c1.16-.31 2.07-1.22 2.38-2.38.46-2.11.46-7.16.46-7.16s0-5.05-.46-7.16z"/>
+                    <polygon fill="#FFFFFF" points="11 14.5 18 10 11 5.5"/>
+                </svg>
+                <svg class="yt-wordmark" viewBox="0 0 74 16" xmlns="http://www.w3.org/2000/svg">
+                    <g font-weight="800" font-family="Arial Black, sans-serif" font-size="19" letter-spacing="-1.2">
+                        <text x="-1" y="16">YouTube</text>
+                    </g>
+                </svg>
+            </div>
+            <span class="pwa-badge">AUDIO</span>
+        </div>
+
+        <div class="input-wrapper">
+            <input type="text" id="yt-url" placeholder="Paste link or Video ID..." autocomplete="off" spellcheck="false">
+        </div>
+
+        <div class="btn-container" id="btn-frame">
+            <button id="play-btn">
+                <div class="spinner" id="spinner"></div>
+                <span id="btn-text">Connect Stream</span>
+            </button>
+        </div>
+
+        <div class="status-terminal idle" id="status-msg">> Pipeline idle. System initialized.</div>
+
+        <div class="meta-display" id="meta-display">
+            <div class="meta-title" id="m-title">Track Title</div>
+            <div class="meta-author" id="m-author">Channel</div>
+        </div>
+
+        <div class="deck-wrapper" id="deck-wrapper">
+            <audio id="native-player" controls playsinline></audio>
+        </div>
+    </div>
+
+    <script>
+        // --- Inline PWA Worker Strategy ---
+        const swCode = `
+            const CACHE_NAME = 'yt-soft-brutal-v1';
+            self.addEventListener('install', (e) => self.skipWaiting());
+            self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
+            self.addEventListener('fetch', (e) => {
+                e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+            });
+        `;
+        const swBlob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(swBlob);
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(swUrl)
+                .then(reg => console.log('Engine Core Ready:', reg.scope))
+                .catch(err => console.error('PWA Engine Blocked:', err));
+        }
+
+        // --- Core Application Logic ---
+        const INVIDIOUS_INSTANCES = [
+            "https://inv.tux.pizza",
+            "https://invidious.asir.dev",
+            "https://vid.puffyan.us",
+            "https://invidious.jing.rocks",
+            "https://invidious.fdn.fr"
+        ];
+
+        const elements = {
+            urlInput: document.getElementById('yt-url'),
+            playBtn: document.getElementById('play-btn'),
+            btnFrame: document.getElementById('btn-frame'),
+            btnText: document.getElementById('btn-text'),
+            spinner: document.getElementById('spinner'),
+            statusMsg: document.getElementById('status-msg'),
+            deckWrapper: document.getElementById('deck-wrapper'),
+            metaDisplay: document.getElementById('meta-display'),
+            mTitle: document.getElementById('m-title'),
+            mAuthor: document.getElementById('m-author'),
+            nativePlayer: document.getElementById('native-player')
+        };
+
+        function extractVideoId(url) {
+            const cleanUrl = url.trim();
+            if (cleanUrl.length === 11) return cleanUrl; 
+            const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i;
+            const match = cleanUrl.match(regex);
+            return match ? match[1] : null;
+        }
+
+        function updateTerminal(msg, mode = 'idle') {
+            elements.statusMsg.textContent = `> ${msg}`;
+            elements.statusMsg.className = 'status-terminal ' + mode;
+        }
+
+        function toggleEngineState(loading) {
+            elements.playBtn.disabled = loading;
+            elements.spinner.style.display = loading ? 'block' : 'none';
+            elements.btnText.style.display = loading ? 'none' : 'block';
+            
+            if (loading) {
+                elements.btnFrame.classList.add('loading-active');
+            } else {
+                elements.btnFrame.classList.remove('loading-active');
+            }
+        }
+
+        async function resolveStreamPayload(videoId) {
+            for (let i = 0; i < INVIDIOUS_INSTANCES.length; i++) {
+                const instance = INVIDIOUS_INSTANCES[i];
+                updateTerminal(`Querying cluster node [${i + 1}/${INVIDIOUS_INSTANCES.length}]`, 'idle');
+                
+                try {
+                    const controller = new AbortController();
+                    const abortTimeout = setTimeout(() => controller.abort(), 7500);
+
+                    const response = await fetch(`${instance}/api/v1/videos/${videoId}`, {
+                        signal: controller.signal,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    clearTimeout(abortTimeout);
+                    if (!response.ok) throw new Error(`ERR_NODE_HTTP_${response.status}`);
+                    
+                    const payload = await response.json();
+                    let targetStream = null;
+
+                    if (payload.adaptiveFormats) {
+                        const audioStreams = payload.adaptiveFormats.filter(f => f.type.startsWith('audio'));
+                        audioStreams.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
+                        if (audioStreams.length > 0) targetStream = audioStreams[0].url;
+                    }
+                    
+                    if (!targetStream && payload.formatStreams && payload.formatStreams.length > 0) {
+                        targetStream = payload.formatStreams[0].url;
+                    }
+
+                    if (targetStream) {
+                        return {
+                            streamUrl: targetStream,
+                            title: payload.title || "Unknown Asset",
+                            author: payload.author || "Unknown Channel",
+                            thumbnails: payload.videoThumbnails || []
+                        };
+                    } else {
+                        throw new Error("EMPTY_NODE_FORMAT_ARRAY");
+                    }
+                } catch (nodeError) {
+                    console.warn(`Node failover loop skipped instance: ${instance}`, nodeError.message);
+                }
+            }
+            throw new Error("CLUSTER_EXHAUSTION: Core proxy arrays rejected operational calls.");
+        }
+
+        function bindMediaSession(meta) {
+            if (!('mediaSession' in navigator)) return;
+
+            const artwork = meta.thumbnails.length > 0 
+                ? meta.thumbnails.map(t => ({ src: t.url, sizes: `${t.width}x${t.height}`, type: 'image/jpeg' }))
+                : [{ src: 'https://via.placeholder.com/512x512.png?text=Audio', sizes: '512x512', type: 'image/png' }];
+
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: meta.title,
+                artist: meta.author,
+                artwork: artwork
+            });
+
+            navigator.mediaSession.setActionHandler('play', () => elements.nativePlayer.play());
+            navigator.mediaSession.setActionHandler('pause', () => elements.nativePlayer.pause());
+            navigator.mediaSession.setActionHandler('seekto', (details) => {
+                if (details.fastSeek && ('fastSeek' in elements.nativePlayer)) {
+                    elements.nativePlayer.fastSeek(details.seekTime);
+                } else {
+                    elements.nativePlayer.currentTime = details.seekTime;
+                }
+            });
+        }
+
+        elements.playBtn.addEventListener('click', async () => {
+            const rawInput = elements.urlInput.value;
+            const targetId = extractVideoId(rawInput);
+
+            if (!targetId) {
+                updateTerminal("PARSING_ERROR: Parameter lacks clean YouTube ID structures.", "error");
+                return;
+            }
+
+            toggleEngineState(true);
+            elements.nativePlayer.pause();
+            elements.nativePlayer.src = '';
+            elements.metaDisplay.style.display = 'none';
+
+            try {
+                const streamMeta = await resolveStreamPayload(targetId);
+                
+                elements.nativePlayer.src = streamMeta.streamUrl;
+                elements.nativePlayer.load();
+                await elements.nativePlayer.play();
+                
+                bindMediaSession(streamMeta);
+                
+                elements.mTitle.textContent = streamMeta.title;
+                elements.mAuthor.textContent = streamMeta.author;
+                elements.metaDisplay.style.display = 'block';
+                
+                updateTerminal("STATUS: Pipeline integrated smoothly.", "idle");
+            } catch (engineError) {
+                updateTerminal(engineError.message, "error");
+            } finally {
+                toggleEngineState(false);
+            }
+        });
+
+        elements.nativePlayer.addEventListener('error', () => {
+            updateTerminal("NATIVE_CORE_FAULT: Stream connection lost or token leased expired.", "error");
+        });
+    </script>
+</body>
+</html>
