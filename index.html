@@ -3,465 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0F0F0F">
-    <meta name="description" content="YouTube Background Audio Engine">
-    <title>YouTube Audio PWA</title>
+    <meta name="theme-color" content="#111827">
+    <title>Streamify Piped Engine</title>
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192.png?text=YouTube">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --yt-black: #0F0F0F;
-            --yt-white: #FFFFFF;
-            --yt-red: #FF0000;
-            --yt-dark-red: #990000;
-            --yt-gray: #F8F9FA;
-            --dark-gray: #606060;
-            --card-radius: 20px;
-            --element-radius: 12px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            background-color: var(--yt-black);
-            color: var(--yt-white);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .app-card {
-            background: var(--yt-white);
-            color: var(--yt-black);
-            border: 2px solid var(--yt-black);
-            border-radius: var(--card-radius);
-            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
-            width: 100%;
-            max-width: 420px;
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            user-select: none;
-        }
-
-        .logo-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .yt-icon {
-            display: block;
-            height: 22px;
-            width: auto;
-        }
-
-        .yt-wordmark {
-            fill: var(--yt-black);
-            height: 20px;
-            width: auto;
-            margin-top: 1px;
-        }
-
-        .pwa-badge {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            background: var(--yt-black);
-            color: var(--yt-white);
-            padding: 3px 8px;
-            border-radius: 6px;
-        }
-
-        .input-wrapper {
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            background: var(--yt-gray);
-            color: var(--yt-black);
-            border: 2px solid var(--yt-black);
-            border-radius: var(--element-radius);
-            padding: 16px;
-            font-size: 15px;
-            font-weight: 500;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        input[type="text"]:focus {
-            background: var(--yt-white);
-            box-shadow: 3px 3px 0px 0px var(--yt-black);
-        }
-
-        .btn-container {
-            position: relative;
-            width: 100%;
-            border-radius: calc(var(--element-radius) + 2px);
-            padding: 3px;
-            background: transparent;
-            transition: background 0.3s ease;
-        }
-
-        .btn-container.loading-active {
-            background: linear-gradient(90deg, var(--yt-red), #ff6b6b, var(--yt-dark-red), var(--yt-red));
-            background-size: 300% 100%;
-            animation: flowingOutline 2s linear infinite;
-        }
-
-        @keyframes flowingOutline {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        button {
-            width: 100%;
-            background: var(--yt-black);
-            color: var(--yt-white);
-            border: 2px solid var(--yt-black);
-            border-radius: var(--element-radius);
-            padding: 16px;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.15);
-            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
-        }
-
-        button:active:not(:disabled) {
-            transform: translateY(2px);
-            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.15);
-        }
-
-        button:disabled {
-            background: var(--yt-white);
-            color: var(--yt-black);
-            border-color: transparent;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .spinner {
-            display: none;
-            width: 18px;
-            height: 18px;
-            border: 2.5px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50%;
-            border-top-color: var(--yt-black);
-            animation: spin 0.65s cubic-bezier(0.6, 0.2, 0.2, 0.8) infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .status-terminal {
-            margin-top: 20px;
-            background: var(--yt-gray);
-            color: var(--yt-black);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 500;
-            padding: 14px;
-            border: 2px solid var(--yt-black);
-            border-radius: var(--element-radius);
-            min-height: 48px;
-            word-break: break-all;
-            display: flex;
-            align-items: center;
-        }
-
-        .status-terminal.error {
-            background: #fff5f5;
-            color: var(--yt-red);
-            border-color: var(--yt-red);
-        }
-
-        .status-terminal.idle {
-            color: #555555;
-        }
-
-        .meta-display {
-            display: none;
-            margin-top: 20px;
-            border-top: 2px dashed rgba(0, 0, 0, 0.15);
-            padding-top: 25px;
-            text-align: left;
-        }
-
-        .meta-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--yt-black);
-            line-clamp: 2;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 6px;
-            line-height: 1.4;
-        }
-
-        .meta-author {
-            font-size: 14px;
-            color: var(--dark-gray);
-            font-weight: 600;
-        }
-
-        .deck-wrapper {
-            display: none;
-            margin-top: 18px;
-        }
-
-        audio {
-            width: 100%;
-            height: 44px;
-            border-radius: var(--element-radius);
-        }
+        :root { --bg: #0b0f19; --card: #111827; --accent: #ef4444; --text: #ffffff; --text-muted: #9ca3af; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .card { background: var(--card); border: 1px solid #1f2937; border-radius: 24px; width: 100%; max-width: 400px; padding: 28px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); text-align: center; }
+        .header { font-size: 20px; font-weight: 800; margin-bottom: 24px; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .header span { color: var(--accent); }
+        input { width: 100%; background: #1f2937; color: #fff; border: 1px solid #374151; border-radius: 14px; padding: 16px; font-size: 15px; outline: none; margin-bottom: 16px; transition: border 0.2s; }
+        input:focus { border-color: var(--accent); }
+        button { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 14px; padding: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+        button:active { opacity: 0.8; }
+        .terminal { margin-top: 20px; background: #070a12; color: #34d399; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 14px; border-radius: 12px; text-align: left; min-height: 50px; word-break: break-all; }
+        .terminal.err { color: #f87171; }
+        .player-zone { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #1f2937; }
+        .title { font-size: 15px; font-weight: 700; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .author { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+        audio { width: 100%; height: 40px; }
     </style>
 </head>
 <body>
 
-    <div class="app-card">
-        <div class="brand-header">
-            <div class="logo-group">
-                <svg class="yt-icon" viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#FF0000" d="M26.97 2.84c-.31-1.16-1.22-2.07-2.38-2.38C22.48 0 13.71 0 13.71 0S4.95 0 2.84.46C1.68.77.77 1.68.46 2.84 0 4.95 0 10 0 10s0 5.05.46 7.16c.31 1.16 1.22 2.07 2.38 2.38 2.11.46 10.87.46 10.87.46s8.77 0 10.88-.46c1.16-.31 2.07-1.22 2.38-2.38.46-2.11.46-7.16.46-7.16s0-5.05-.46-7.16z"/>
-                    <polygon fill="#FFFFFF" points="11 14.5 18 10 11 5.5"/>
-                </svg>
-                <svg class="yt-wordmark" viewBox="0 0 74 16" xmlns="http://www.w3.org/2000/svg">
-                    <g font-weight="800" font-family="Arial Black, sans-serif" font-size="19" letter-spacing="-1.2">
-                        <text x="-1" y="16">YouTube</text>
-                    </g>
-                </svg>
-            </div>
-            <span class="pwa-badge">AUDIO</span>
-        </div>
-
-        <div class="input-wrapper">
-            <input type="text" id="yt-url" placeholder="Paste link or Video ID..." autocomplete="off" spellcheck="false">
-        </div>
-
-        <div class="btn-container" id="btn-frame">
-            <button id="play-btn">
-                <div class="spinner" id="spinner"></div>
-                <span id="btn-text">Connect Stream</span>
-            </button>
-        </div>
-
-        <div class="status-terminal idle" id="status-msg">> Pipeline idle. System initialized.</div>
-
-        <div class="meta-display" id="meta-display">
-            <div class="meta-title" id="m-title">Track Title</div>
-            <div class="meta-author" id="m-author">Channel</div>
-        </div>
-
-        <div class="deck-wrapper" id="deck-wrapper">
-            <audio id="native-player" controls playsinline></audio>
+    <div class="card">
+        <div class="header">Streamify <span>Audio</span></div>
+        <input type="text" id="url" placeholder="Paste YouTube link or ID...">
+        <button id="play-btn">Initialize Engine</button>
+        <div class="terminal" id="term">> System ready. Standing by.</div>
+        
+        <div class="player-zone" id="player-zone">
+            <div class="title" id="track-title">Track Title</div>
+            <div class="author" id="track-author">Channel</div>
+            <audio id="audio-node" controls playsinline></audio>
         </div>
     </div>
 
     <script>
-        // Standard Registration strategy for GitHub Pages 
+        // Physical Service worker scope validation for secure roots
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Engine Connected:', reg.scope))
-                    .catch(err => console.error('PWA Engine Blocked:', err));
-            });
+            navigator.serviceWorker.register('./sw.js').catch(() => {});
         }
 
-        const INVIDIOUS_INSTANCES = [
-            "https://inv.tux.pizza",
-            "https://invidious.asir.dev",
-            "https://vid.puffyan.us",
-            "https://invidious.jing.rocks",
-            "https://invidious.fdn.fr",
-            "https://invidious.perennialte.ch"
+        // Piped active mirror matrix clusters
+        const PIPED_NODES = [
+            "https://pipedapi.kavin.rocks",
+            "https://pipedapi.tokhmi.xyz",
+            "https://api.piped.yt",
+            "https://pipedapi.colby.moe",
+            "https://piped-api.garudalinux.org",
+            "https://pipedapi.leptons.xyz"
         ];
 
-        const elements = {
-            urlInput: document.getElementById('yt-url'),
-            playBtn: document.getElementById('play-btn'),
-            btnFrame: document.getElementById('btn-frame'),
-            btnText: document.getElementById('btn-text'),
-            spinner: document.getElementById('spinner'),
-            statusMsg: document.getElementById('status-msg'),
-            deckWrapper: document.getElementById('deck-wrapper'),
-            metaDisplay: document.getElementById('meta-display'),
-            mTitle: document.getElementById('m-title'),
-            mAuthor: document.getElementById('m-author'),
-            nativePlayer: document.getElementById('native-player')
+        const ui = {
+            url: document.getElementById('url'),
+            btn: document.getElementById('play-btn'),
+            term: document.getElementById('term'),
+            zone: document.getElementById('player-zone'),
+            title: document.getElementById('track-title'),
+            author: document.getElementById('track-author'),
+            audio: document.getElementById('audio-node')
         };
 
-        function extractVideoId(url) {
-            const cleanUrl = url.trim();
-            if (cleanUrl.length === 11) return cleanUrl; 
-            const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i;
-            const match = cleanUrl.match(regex);
+        function parseId(input) {
+            let val = input.trim();
+            if (val.length === 11) return val;
+            let reg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i;
+            let match = val.match(reg);
             return match ? match[1] : null;
         }
 
-        function updateTerminal(msg, mode = 'idle') {
-            elements.statusMsg.textContent = `> ${msg}`;
-            elements.statusMsg.className = 'status-terminal ' + mode;
-        }
-
-        function toggleEngineState(loading) {
-            elements.playBtn.disabled = loading;
-            elements.spinner.style.display = loading ? 'block' : 'none';
-            elements.btnText.style.display = loading ? 'none' : 'block';
-            if (loading) {
-                elements.btnFrame.classList.add('loading-active');
-            } else {
-                elements.btnFrame.classList.remove('loading-active');
-            }
-        }
-
-        async function resolveStreamPayload(videoId) {
-            for (let i = 0; i < INVIDIOUS_INSTANCES.length; i++) {
-                const instance = INVIDIOUS_INSTANCES[i];
-                updateTerminal(`Querying cluster node [${i + 1}/${INVIDIOUS_INSTANCES.length}]`, 'idle');
-                
+        async function fetchStream(id) {
+            for (let i = 0; i < PIPED_NODES.length; i++) {
+                ui.term.className = 'terminal';
+                ui.term.textContent = `> Routing pipeline node [${i+1}/${PIPED_NODES.length}]...`;
                 try {
-                    const controller = new AbortController();
-                    const abortTimeout = setTimeout(() => controller.abort(), 6000);
-
-                    // Crucial: Append local=true to get completely proxied stream links 
-                    const response = await fetch(`${instance}/api/v1/videos/${videoId}?local=true`, {
-                        signal: controller.signal,
-                        headers: { 'Accept': 'application/json' }
-                    });
+                    let res = await fetch(`${PIPED_NODES[i]}/streams/${id}`);
+                    if (!res.ok) throw new Error();
+                    let data = await res.json();
                     
-                    clearTimeout(abortTimeout);
-                    if (!response.ok) throw new Error(`ERR_NODE_HTTP_${response.status}`);
-                    
-                    const payload = await response.json();
-                    let targetStream = null;
-
-                    if (payload.adaptiveFormats) {
-                        const audioStreams = payload.adaptiveFormats.filter(f => f.type && f.type.startsWith('audio'));
-                        audioStreams.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
-                        if (audioStreams.length > 0) targetStream = audioStreams[0].url;
-                    }
-                    
-                    if (!targetStream && payload.formatStreams && payload.formatStreams.length > 0) {
-                        targetStream = payload.formatStreams[0].url;
-                    }
-
-                    if (targetStream) {
-                        // Ensure stream routes cleanly through instance proxy fallback manually if absolute path missing
-                        if (targetStream.startsWith('/')) {
-                            targetStream = `${instance}${targetStream}`;
-                        }
+                    // Filter out high-quality decoupled audio tracks
+                    if (data.audioStreams && data.audioStreams.length > 0) {
                         return {
-                            streamUrl: targetStream,
-                            title: payload.title || "Unknown Asset",
-                            author: payload.author || "Unknown Channel",
-                            thumbnails: payload.videoThumbnails || []
+                            url: data.audioStreams[0].url,
+                            title: data.title,
+                            author: data.uploader
                         };
-                    } else {
-                        throw new Error("EMPTY_NODE_FORMAT_ARRAY");
                     }
-                } catch (nodeError) {
-                    console.warn(`Node failover bypassed instance: ${instance}`, nodeError.message);
+                } catch (e) {
+                    console.log(`Node ${PIPED_NODES[i]} rejected response pipeline.`);
                 }
             }
-            throw new Error("CLUSTER_EXHAUSTION: Audio pipelines rejected calls.");
+            throw new Error("CLUSTER_EXHAUSTION: All public nodes rejected the audio streams.");
         }
 
-        function bindMediaSession(meta) {
+        function setupMediaSession(title, author) {
             if (!('mediaSession' in navigator)) return;
-
-            const artwork = meta.thumbnails.length > 0 
-                ? meta.thumbnails.map(t => ({ src: t.url, sizes: `${t.width}x${t.height}`, type: 'image/jpeg' }))
-                : [{ src: 'https://via.placeholder.com/512x512.png?text=Audio', sizes: '512x512', type: 'image/png' }];
-
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: meta.title,
-                artist: meta.author,
-                artwork: artwork
+                title: title,
+                artist: author,
+                artwork: [{ src: 'https://via.placeholder.com/512x512.png?text=Audio', sizes: '512x512', type: 'image/png' }]
             });
-
-            navigator.mediaSession.setActionHandler('play', () => elements.nativePlayer.play());
-            navigator.mediaSession.setActionHandler('pause', () => elements.nativePlayer.pause());
-            navigator.mediaSession.setActionHandler('seekto', (details) => {
-                if (details.fastSeek && ('fastSeek' in elements.nativePlayer)) {
-                    elements.nativePlayer.fastSeek(details.seekTime);
-                } else {
-                    elements.nativePlayer.currentTime = details.seekTime;
-                }
-            });
+            navigator.mediaSession.setActionHandler('play', () => ui.audio.play());
+            navigator.mediaSession.setActionHandler('pause', () => ui.audio.pause());
         }
 
-        elements.playBtn.addEventListener('click', async () => {
-            const rawInput = elements.urlInput.value;
-            const targetId = extractVideoId(rawInput);
-
-            if (!targetId) {
-                updateTerminal("PARSING_ERROR: Parameter lacks YouTube ID structure.", "error");
+        ui.btn.addEventListener('click', async () => {
+            let id = parseId(ui.url.value);
+            if (!id) {
+                ui.term.className = 'terminal err';
+                ui.term.textContent = "> ERROR: Invalid YouTube String structure.";
                 return;
             }
 
-            toggleEngineState(true);
-            elements.nativePlayer.pause();
-            elements.nativePlayer.src = '';
-            elements.metaDisplay.style.display = 'none';
-
+            ui.btn.disabled = true;
             try {
-                const streamMeta = await resolveStreamPayload(targetId);
+                let track = await fetchStream(id);
                 
-                elements.nativePlayer.src = streamMeta.streamUrl;
-                elements.nativePlayer.load();
+                ui.audio.src = track.url;
+                ui.audio.load();
+                await ui.audio.play();
                 
-                // Triggers native mobile background media thread interaction rules
-                await elements.nativePlayer.play();
+                setupMediaSession(track.title, track.author);
                 
-                bindMediaSession(streamMeta);
-                
-                elements.mTitle.textContent = streamMeta.title;
-                elements.mAuthor.textContent = streamMeta.author;
-                elements.metaDisplay.style.display = 'block';
-                elements.deckWrapper.style.display = 'block';
-                
-                updateTerminal("STATUS: Pipeline integrated smoothly.", "idle");
-            } catch (engineError) {
-                updateTerminal(engineError.message, "error");
+                ui.title.textContent = track.title;
+                ui.author.textContent = track.author;
+                ui.zone.style.display = 'block';
+                ui.term.textContent = "> STATUS: Stream integrated successfully.";
+            } catch (err) {
+                ui.term.className = 'terminal err';
+                ui.term.textContent = `> ${err.message}`;
             } finally {
-                toggleEngineState(false);
+                ui.btn.disabled = false;
             }
-        });
-
-        elements.nativePlayer.addEventListener('error', () => {
-            updateTerminal("NATIVE_CORE_FAULT: Link expired or current node restricted access.", "error");
         });
     </script>
 </body>
