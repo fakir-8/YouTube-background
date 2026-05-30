@@ -3,55 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#111827">
-    <title>Streamify Piped Engine</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d0e15">
+    <title>Streamify Background Deck</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg: #0b0f19; --card: #111827; --accent: #ef4444; --text: #ffffff; --text-muted: #9ca3af; }
+        :root {
+            --bg-color: #06070d;
+            --surface-color: #0d0e16;
+            --border-color: #1f2235;
+            --accent-color: #ff3e3e;
+            --text-main: #ffffff;
+            --text-muted: #7e84a3;
+            --terminal-green: #34d399;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
-        .card { background: var(--card); border: 1px solid #1f2937; border-radius: 24px; width: 100%; max-width: 400px; padding: 28px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); text-align: center; }
-        .header { font-size: 20px; font-weight: 800; margin-bottom: 24px; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .header span { color: var(--accent); }
-        input { width: 100%; background: #1f2937; color: #fff; border: 1px solid #374151; border-radius: 14px; padding: 16px; font-size: 15px; outline: none; margin-bottom: 16px; transition: border 0.2s; }
-        input:focus { border-color: var(--accent); }
-        button { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 14px; padding: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
-        button:active { opacity: 0.8; }
-        .terminal { margin-top: 20px; background: #070a12; color: #34d399; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 14px; border-radius: 12px; text-align: left; min-height: 50px; word-break: break-all; }
-        .terminal.err { color: #f87171; }
-        .player-zone { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #1f2937; }
-        .title { font-size: 15px; font-weight: 700; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .author { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
-        audio { width: 100%; height: 40px; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+        
+        .player-frame {
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .brand { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+        .brand span { color: var(--accent-color); }
+
+        .input-group { margin-bottom: 16px; }
+        input {
+            width: 100%;
+            background: #131522;
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: var(--accent-color); }
+
+        button {
+            width: 100%;
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        button:active { transform: scale(0.98); opacity: 0.9; }
+        button:disabled { background: #222538; color: var(--text-muted); cursor: not-allowed; }
+
+        .console-log {
+            margin-top: 16px;
+            background: #030408;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--terminal-green);
+            min-height: 54px;
+            word-break: break-all;
+        }
+        .console-log.error-state { color: #f87171; border-color: #551a1a; }
+
+        .deck-display { display: none; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+        .track-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .track-author { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+        
+        audio { width: 100%; height: 40px; margin-top: 8px; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="header">Streamify <span>Audio</span></div>
-        <input type="text" id="url" placeholder="Paste YouTube link or ID...">
-        <button id="play-btn">Initialize Engine</button>
-        <div class="terminal" id="term">> System ready. Standing by.</div>
+    <div class="player-frame">
+        <div class="brand">CORE<span>DECK</span></div>
         
-        <div class="player-zone" id="player-zone">
-            <div class="title" id="track-title">Track Title</div>
-            <div class="author" id="track-author">Channel</div>
-            <audio id="audio-node" controls playsinline></audio>
+        <div class="input-group">
+            <input type="text" id="target-url" placeholder="Paste YouTube link or Video ID...">
+        </div>
+        
+        <button id="ignite-btn">Load Pipeline</button>
+        
+        <div class="console-log" id="terminal-screen">> System status: Nominal. Ready for stream hook.</div>
+        
+        <div class="deck-display" id="player-view">
+            <div class="track-title" id="meta-title">Asset Title</div>
+            <div class="track-author" id="meta-author">Channel Title</div>
+            <audio id="core-audio-node" controls playsinline></audio>
         </div>
     </div>
 
     <script>
-        // Physical Service worker scope validation for secure roots
+        // Inline PWA worker structure injection to allow background network processes
+        const swTemplate = `
+            self.addEventListener('install', e => self.skipWaiting());
+            self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+            self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
+        `;
+        const blobInstance = new Blob([swTemplate], { type: 'application/javascript' });
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(() => {});
+            navigator.serviceWorker.register(URL.createObjectURL(blobInstance)).catch(()=>{});
         }
 
-        // Piped active mirror matrix clusters
-        const PIPED_NODES = [
+        // Dedicated Piped Federation Endpoint Clusters (Proxied by design)
+        const FEDERATION_ROUTERS = [
             "https://pipedapi.kavin.rocks",
             "https://pipedapi.tokhmi.xyz",
             "https://api.piped.yt",
@@ -60,87 +129,123 @@
             "https://pipedapi.leptons.xyz"
         ];
 
-        const ui = {
-            url: document.getElementById('url'),
-            btn: document.getElementById('play-btn'),
-            term: document.getElementById('term'),
-            zone: document.getElementById('player-zone'),
-            title: document.getElementById('track-title'),
-            author: document.getElementById('track-author'),
-            audio: document.getElementById('audio-node')
+        const dom = {
+            input: document.getElementById('target-url'),
+            btn: document.getElementById('ignite-btn'),
+            term: document.getElementById('terminal-screen'),
+            view: document.getElementById('player-view'),
+            title: document.getElementById('meta-title'),
+            author: document.getElementById('meta-author'),
+            audio: document.getElementById('core-audio-node')
         };
 
-        function parseId(input) {
-            let val = input.trim();
-            if (val.length === 11) return val;
-            let reg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i;
-            let match = val.match(reg);
-            return match ? match[1] : null;
+        let audioContextEngine = null;
+
+        // Triggers an un-stoppable mathematical silent frequency to keep the mobile processor awake
+        function executeWakeLockHack() {
+            try {
+                if (audioContextEngine) return;
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                
+                audioContextEngine = new AudioContextClass();
+                const oscillator = audioContextEngine.createOscillator();
+                const gainNode = audioContextEngine.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 20000; // Ultra-sonic frequency outside human hearing spectrum
+                gainNode.gain.value = 0.00001;     // Infinite near-zero amplitude prevents sound clipping
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContextEngine.destination);
+                oscillator.start(0);
+                logTerminal("WAKE_LOCK: Background CPU lock sequence injected.");
+            } catch(e) {
+                console.log("WakeLock structure rejected initialization context.", e);
+            }
         }
 
-        async function fetchStream(id) {
-            for (let i = 0; i < PIPED_NODES.length; i++) {
-                ui.term.className = 'terminal';
-                ui.term.textContent = `> Routing pipeline node [${i+1}/${PIPED_NODES.length}]...`;
+        function logTerminal(msg, isError = false) {
+            dom.term.textContent = `> ${msg}`;
+            dom.term.className = isError ? 'console-log error-state' : 'console-log';
+        }
+
+        function extractCleanId(raw) {
+            let src = raw.trim();
+            if (src.length === 11) return src;
+            let pattern = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i;
+            let extraction = src.match(pattern);
+            return extraction ? extraction[1] : null;
+        }
+
+        async function extractProxiedPayload(videoId) {
+            for(let i = 0; i < FEDERATION_ROUTERS.length; i++) {
+                logTerminal(`Routing matrix node cluster [${i+1}/${FEDERATION_ROUTERS.length}]...`);
                 try {
-                    let res = await fetch(`${PIPED_NODES[i]}/streams/${id}`);
-                    if (!res.ok) throw new Error();
-                    let data = await res.json();
+                    const timeoutSignal = AbortController.timeout ? AbortController.timeout(6000) : null;
+                    const response = await fetch(`${FEDERATION_ROUTERS[i]}/streams/${videoId}`, { signal: timeoutSignal });
+                    if(!response.ok) throw new Error();
                     
-                    // Filter out high-quality decoupled audio tracks
-                    if (data.audioStreams && data.audioStreams.length > 0) {
+                    const payload = await response.json();
+                    if(payload.audioStreams && payload.audioStreams.length > 0) {
+                        // Sort by quality index to grab highest fidelity clean data channel
+                        payload.audioStreams.sort((a,b) => (b.bitrate || 0) - (a.bitrate || 0));
                         return {
-                            url: data.audioStreams[0].url,
-                            title: data.title,
-                            author: data.uploader
+                            url: payload.audioStreams[0].url,
+                            title: payload.title,
+                            author: payload.uploader
                         };
                     }
-                } catch (e) {
-                    console.log(`Node ${PIPED_NODES[i]} rejected response pipeline.`);
+                } catch(err) {
+                    console.warn(`Cluster Node index ${i} failed stream delivery constraints.`);
                 }
             }
-            throw new Error("CLUSTER_EXHAUSTION: All public nodes rejected the audio streams.");
+            throw new Error("FAILOVER_CRITICAL: All proxied federation endpoints rejected operational requests.");
         }
 
-        function setupMediaSession(title, author) {
+        function configureSystemMediaSession(title, author) {
             if (!('mediaSession' in navigator)) return;
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: title,
                 artist: author,
-                artwork: [{ src: 'https://via.placeholder.com/512x512.png?text=Audio', sizes: '512x512', type: 'image/png' }]
+                artwork: [{ src: 'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=512', sizes: '512x512', type: 'image/jpeg' }]
             });
-            navigator.mediaSession.setActionHandler('play', () => ui.audio.play());
-            navigator.mediaSession.setActionHandler('pause', () => ui.audio.pause());
+            navigator.mediaSession.setActionHandler('play', () => dom.audio.play());
+            navigator.mediaSession.setActionHandler('pause', () => dom.audio.pause());
         }
 
-        ui.btn.addEventListener('click', async () => {
-            let id = parseId(ui.url.value);
-            if (!id) {
-                ui.term.className = 'terminal err';
-                ui.term.textContent = "> ERROR: Invalid YouTube String structure.";
+        dom.btn.addEventListener('click', async () => {
+            const parsedId = extractCleanId(dom.input.value);
+            if(!parsedId) {
+                logTerminal("PARSING_ERROR: Input is missing standard 11-character YouTube configuration formatting.", true);
                 return;
             }
 
-            ui.btn.disabled = true;
+            dom.btn.disabled = true;
+            executeWakeLockHack();
+
             try {
-                let track = await fetchStream(id);
+                const trackData = await extractProxiedPayload(parsedId);
                 
-                ui.audio.src = track.url;
-                ui.audio.load();
-                await ui.audio.play();
+                dom.audio.src = trackData.url;
+                dom.audio.load();
+                await dom.audio.play();
                 
-                setupMediaSession(track.title, track.author);
+                configureSystemMediaSession(trackData.title, trackData.author);
                 
-                ui.title.textContent = track.title;
-                ui.author.textContent = track.author;
-                ui.zone.style.display = 'block';
-                ui.term.textContent = "> STATUS: Stream integrated successfully.";
-            } catch (err) {
-                ui.term.className = 'terminal err';
-                ui.term.textContent = `> ${err.message}`;
+                dom.title.textContent = trackData.title;
+                dom.author.textContent = trackData.author;
+                dom.view.style.display = 'block';
+                logTerminal("PIPELINE_STABLE: Stream connected through absolute data proxy.");
+            } catch(err) {
+                logTerminal(err.message, true);
             } finally {
-                ui.btn.disabled = false;
+                dom.btn.disabled = false;
             }
+        });
+
+        dom.audio.addEventListener('error', () => {
+            logTerminal("PIPELINE_BREAK: Audio source channel was closed prematurely by host node.", true);
         });
     </script>
 </body>
