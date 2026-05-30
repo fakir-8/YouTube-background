@@ -44,7 +44,6 @@
             padding: 20px;
         }
 
-        /* Soft Neo-Brutalist Main Component Frame */
         .app-card {
             background: var(--yt-white);
             color: var(--yt-black);
@@ -58,7 +57,6 @@
             flex-direction: column;
         }
 
-        /* YouTube Brand Architecture Layout Realignment */
         .brand-header {
             display: flex;
             align-items: center;
@@ -96,7 +94,6 @@
             border-radius: 6px;
         }
 
-        /* UI Input Layout */
         .input-wrapper {
             margin-bottom: 20px;
             width: 100%;
@@ -120,7 +117,6 @@
             box-shadow: 3px 3px 0px 0px var(--yt-black);
         }
 
-        /* Animated Dynamic Border Container */
         .btn-container {
             position: relative;
             width: 100%;
@@ -130,7 +126,6 @@
             transition: background 0.3s ease;
         }
 
-        /* Flows a dual red gradient layer across the bounding container layout upon request */
         .btn-container.loading-active {
             background: linear-gradient(90deg, var(--yt-red), #ff6b6b, var(--yt-dark-red), var(--yt-red));
             background-size: 300% 100%;
@@ -142,7 +137,6 @@
             100% { background-position: 100% 50%; }
         }
 
-        /* Main Call To Action Button Layout */
         button {
             width: 100%;
             background: var(--yt-black);
@@ -175,7 +169,6 @@
             box-shadow: none;
         }
 
-        /* Polished Spinner Integration */
         .spinner {
             display: none;
             width: 18px;
@@ -190,7 +183,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* High Visibility Low Contrast Feedbacks */
         .status-terminal {
             margin-top: 20px;
             background: var(--yt-gray);
@@ -217,7 +209,6 @@
             color: #555555;
         }
 
-        /* Asset Meta Block */
         .meta-display {
             display: none;
             margin-top: 20px;
@@ -245,7 +236,6 @@
             font-weight: 600;
         }
 
-        /* Embedded Audio Pipeline Deck */
         .deck-wrapper {
             display: none;
             margin-top: 18px;
@@ -300,31 +290,22 @@
     </div>
 
     <script>
-        // --- Inline PWA Worker Strategy ---
-        const swCode = `
-            const CACHE_NAME = 'yt-soft-brutal-v1';
-            self.addEventListener('install', (e) => self.skipWaiting());
-            self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
-            self.addEventListener('fetch', (e) => {
-                e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-            });
-        `;
-        const swBlob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(swBlob);
-
+        // Standard Registration strategy for GitHub Pages 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register(swUrl)
-                .then(reg => console.log('Engine Core Ready:', reg.scope))
-                .catch(err => console.error('PWA Engine Blocked:', err));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Engine Connected:', reg.scope))
+                    .catch(err => console.error('PWA Engine Blocked:', err));
+            });
         }
 
-        // --- Core Application Logic ---
         const INVIDIOUS_INSTANCES = [
             "https://inv.tux.pizza",
             "https://invidious.asir.dev",
             "https://vid.puffyan.us",
             "https://invidious.jing.rocks",
-            "https://invidious.fdn.fr"
+            "https://invidious.fdn.fr",
+            "https://invidious.perennialte.ch"
         ];
 
         const elements = {
@@ -358,7 +339,6 @@
             elements.playBtn.disabled = loading;
             elements.spinner.style.display = loading ? 'block' : 'none';
             elements.btnText.style.display = loading ? 'none' : 'block';
-            
             if (loading) {
                 elements.btnFrame.classList.add('loading-active');
             } else {
@@ -373,9 +353,10 @@
                 
                 try {
                     const controller = new AbortController();
-                    const abortTimeout = setTimeout(() => controller.abort(), 7500);
+                    const abortTimeout = setTimeout(() => controller.abort(), 6000);
 
-                    const response = await fetch(`${instance}/api/v1/videos/${videoId}`, {
+                    // Crucial: Append local=true to get completely proxied stream links 
+                    const response = await fetch(`${instance}/api/v1/videos/${videoId}?local=true`, {
                         signal: controller.signal,
                         headers: { 'Accept': 'application/json' }
                     });
@@ -387,7 +368,7 @@
                     let targetStream = null;
 
                     if (payload.adaptiveFormats) {
-                        const audioStreams = payload.adaptiveFormats.filter(f => f.type.startsWith('audio'));
+                        const audioStreams = payload.adaptiveFormats.filter(f => f.type && f.type.startsWith('audio'));
                         audioStreams.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
                         if (audioStreams.length > 0) targetStream = audioStreams[0].url;
                     }
@@ -397,6 +378,10 @@
                     }
 
                     if (targetStream) {
+                        // Ensure stream routes cleanly through instance proxy fallback manually if absolute path missing
+                        if (targetStream.startsWith('/')) {
+                            targetStream = `${instance}${targetStream}`;
+                        }
                         return {
                             streamUrl: targetStream,
                             title: payload.title || "Unknown Asset",
@@ -407,10 +392,10 @@
                         throw new Error("EMPTY_NODE_FORMAT_ARRAY");
                     }
                 } catch (nodeError) {
-                    console.warn(`Node failover loop skipped instance: ${instance}`, nodeError.message);
+                    console.warn(`Node failover bypassed instance: ${instance}`, nodeError.message);
                 }
             }
-            throw new Error("CLUSTER_EXHAUSTION: Core proxy arrays rejected operational calls.");
+            throw new Error("CLUSTER_EXHAUSTION: Audio pipelines rejected calls.");
         }
 
         function bindMediaSession(meta) {
@@ -442,7 +427,7 @@
             const targetId = extractVideoId(rawInput);
 
             if (!targetId) {
-                updateTerminal("PARSING_ERROR: Parameter lacks clean YouTube ID structures.", "error");
+                updateTerminal("PARSING_ERROR: Parameter lacks YouTube ID structure.", "error");
                 return;
             }
 
@@ -456,6 +441,8 @@
                 
                 elements.nativePlayer.src = streamMeta.streamUrl;
                 elements.nativePlayer.load();
+                
+                // Triggers native mobile background media thread interaction rules
                 await elements.nativePlayer.play();
                 
                 bindMediaSession(streamMeta);
@@ -463,6 +450,7 @@
                 elements.mTitle.textContent = streamMeta.title;
                 elements.mAuthor.textContent = streamMeta.author;
                 elements.metaDisplay.style.display = 'block';
+                elements.deckWrapper.style.display = 'block';
                 
                 updateTerminal("STATUS: Pipeline integrated smoothly.", "idle");
             } catch (engineError) {
@@ -473,7 +461,7 @@
         });
 
         elements.nativePlayer.addEventListener('error', () => {
-            updateTerminal("NATIVE_CORE_FAULT: Stream connection lost or token leased expired.", "error");
+            updateTerminal("NATIVE_CORE_FAULT: Link expired or current node restricted access.", "error");
         });
     </script>
 </body>
