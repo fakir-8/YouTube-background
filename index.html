@@ -1,395 +1,901 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether AI — Verified Web Dashboard</title>
-    
-    <!-- Tailwind CSS Engine -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport"/>
+    <title>Mubtasim Munim — The Sovereign Rebel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
+                    colors: {
+                        "primary": "#50C878", // Emerald Green
+                        "secondary": "#301934", // Royal Purple
+                        "background": "#19101b",
+                        "parchment": "#F5F5DC",
+                        "on-background": "#F5F5DC",
+                        "on-surface": "#F5F5DC",
+                        "royal-purple": "#301934",
+                        "surface-container-high": "#2a1b2e",
+                        "surface-container-lowest": "#140c16"
+                    },
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    }
-                }
-            }
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "none": "0", "DEFAULT": "0", "lg": "0", "xl": "0", "full": "9999px" },
+                },
+            },
         }
     </script>
-
-    <!-- Google Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Markdown Parser Engine -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
-        .markdown-body p { margin-bottom: 0.75rem; }
-        .markdown-body p:last-child { margin-bottom: 0; }
-        .markdown-body pre { background: #0f172a; padding: 1rem; border-radius: 0.75rem; border: 1px solid #334155; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; overflow-x: auto; margin: 0.75rem 0; }
-        .markdown-body code { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #f472b6; background: #1e1b4b; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
-        .markdown-body ul, .markdown-body ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
-        .markdown-body ul { list-style-type: disc; }
-        .markdown-body ol { list-style-type: decimal; }
+        html { scroll-behavior: smooth; }
+        section { scroll-margin-top: 80px; }
+        @media (max-width: 767px) {
+            section { scroll-margin-top: 68px; }
+        }
+        
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        .hard-shadow { box-shadow: 6px 6px 0px 0px #000000; }
+        .hard-shadow-sm { box-shadow: 3px 3px 0px 0px #000000; }
+        .hard-shadow-emerald { box-shadow: 6px 6px 0px 0px #50C878; }
+        .hard-shadow-sm-emerald { box-shadow: 3px 3px 0px 0px #50C878; }
+        
+        @media (min-width: 768px) {
+            .hard-shadow { box-shadow: 10px 10px 0px 0px #000000; }
+            .hard-shadow-sm { box-shadow: 4px 4px 0px 0px #000000; }
+            .hard-shadow-emerald { box-shadow: 10px 10px 0px 0px #50C878; }
+            .hard-shadow-sm-emerald { box-shadow: 4px 4px 0px 0px #50C878; }
+        }
+        
+        .mesh-gradient {
+            background: radial-gradient(at 0% 0%, #301934 0px, transparent 50%),
+                        radial-gradient(at 100% 0%, #50C8781a 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, #301934 0px, transparent 50%),
+                        radial-gradient(at 0% 100%, #50C8781a 0px, transparent 50%);
+            background-size: 200% 200%;
+            animation: meshFlow 12s ease infinite;
+        }
+        @keyframes meshFlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .block-cursor {
+            display: inline-block;
+            width: 0.4em;
+            height: 0.9em;
+            background-color: #50C878;
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: cursor-blink 0.8s infinite;
+        }
+
+        .modal-enter { transform: scale(0.95) translate(10px, -10px); opacity: 0; pointer-events: none; }
+        .modal-active { transform: scale(1) translate(0, 0); opacity: 1; pointer-events: auto; }
+
+        .arsenal-card:hover .slide-up-content { transform: translateY(0); }
+        .slide-up-content { transform: translateY(101%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        .scanline { position: relative; overflow: hidden; }
+        .scanline::after {
+            content: "";
+            position: absolute;
+            top: -100%; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(80, 200, 120, 0.05) 50%);
+            background-size: 100% 4px;
+            animation: scan 6s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scan { to { top: 100%; } }
+
+        .marquee-container { overflow: hidden; display: flex; width: 100%; background: #000; border-top: 4px solid #000; border-bottom: 4px solid #000; }
+        .marquee-content { display: flex; animation: marquee 25s linear infinite; min-width: 200%; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .rotate-3d:hover { transform: perspective(1000px) rotateY(10deg) rotateX(4deg); }
+        .hover-lift { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        .hover-lift:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0px 0px #50C878; }
+        
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .stagger-1 { transition-delay: 0.05s; }
+        .stagger-2 { transition-delay: 0.1s; }
+        .stagger-3 { transition-delay: 0.15s; }
+
+        .nav-link.active { color: #50C878; border-bottom: 4px solid #50C878; }
+        .nav-link { border-bottom: 4px solid transparent; }
     </style>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 font-sans h-screen flex overflow-hidden antialiased">
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-black overflow-x-hidden">
 
-    <div class="flex w-full h-full relative">
-        
-        <!-- Sidebar Controls -->
-        <aside class="w-80 bg-[#0f1524] border-r border-slate-800/80 flex flex-col justify-between p-5 shrink-0 hidden md:flex z-20 shadow-2xl">
-            <div class="space-y-6">
-                <div class="flex items-center gap-3">
-                    <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
-                        <i class="fa-solid fa-wand-magic-sparkles text-lg text-white"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-base tracking-tight text-white">Aether Interface</h1>
-                        <p class="text-[11px] text-slate-400 font-medium tracking-wide uppercase">GitHub Web Pipeline</p>
-                    </div>
-                </div>
-
-                <hr class="border-slate-800/80">
-
-                <div class="space-y-4">
-                    <label class="text-[11px] font-bold tracking-wider text-slate-400 uppercase block">Engine Authentication</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-shield-halved absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-                        <input type="password" id="sidebarApiKey" placeholder="Using hardcoded key..." 
-                            class="w-full bg-[#070a12] text-xs text-slate-200 pl-9 pr-3 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-indigo-500 font-mono transition-all placeholder:text-slate-600">
-                    </div>
-
-                    <div class="pt-2">
-                        <label class="text-[11px] font-bold tracking-wider text-slate-400 uppercase block mb-2">Model Management</label>
-                        <div class="flex bg-[#070a12] p-1 rounded-xl border border-slate-800 mb-3">
-                            <button id="modeAuto" onclick="toggleEngineMode('auto')" class="flex-1 text-center py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-md">Auto Cluster</button>
-                            <button id="modeManual" onclick="toggleEngineMode('manual')" class="flex-1 text-center py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-400 hover:text-white">Manual ID</button>
-                        </div>
-                    </div>
-
-                    <div id="modelConfigBox" class="space-y-2">
-                        <div class="bg-indigo-950/20 border border-indigo-900/40 rounded-xl p-3 text-xs text-indigo-300 leading-relaxed">
-                            <i class="fa-solid fa-network-wired mr-1.5 text-indigo-400"></i> Auto mode processes requests using high-speed verified parameters.
-                        </div>
-                        <input id="manualModelInput" type="text" value="google/gemini-2.5-flash" 
-                            class="hidden w-full bg-[#070a12] text-xs font-mono text-slate-200 px-3.5 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-indigo-500 transition-all">
-                    </div>
-                </div>
+<!-- About Modal -->
+<div class="fixed inset-0 z-[100] flex items-start justify-end p-4 md:p-8 pointer-events-none" id="about-modal-wrapper">
+    <div class="absolute inset-0 bg-black/75 backdrop-blur-sm pointer-events-auto hidden" id="modal-overlay" onclick="toggleModal()"></div>
+    <div class="relative w-full max-w-sm bg-royal-purple border-4 border-black hard-shadow p-6 md:p-8 z-[101] modal-enter transition-all duration-300" id="about-modal-content">
+        <button class="absolute top-4 right-4 text-primary hover:rotate-90 transition-transform" onclick="toggleModal()" aria-label="Close Modal">
+            <span class="material-symbols-outlined text-3xl font-bold">close</span>
+        </button>
+        <div class="flex flex-col items-center text-center">
+            <div class="w-28 h-28 md:w-32 md:h-32 border-4 border-black hard-shadow-emerald overflow-hidden mb-6 bg-secondary">
+                <img alt="Mubtasim Munim profile picture" class="w-full h-full object-cover grayscale" src="https://github.com/fakir-8/Image-Gallary/blob/main/20241217_100250_0000.png?raw=true"/>
             </div>
-
-            <div class="bg-[#070a12] border border-slate-800/60 rounded-xl p-3.5 space-y-2.5">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-400">Environment</span>
-                    <span class="text-emerald-400 font-semibold bg-emerald-950/40 border border-emerald-900/30 px-2 py-0.5 rounded-md text-[10px]">GitHub Pages Secure</span>
-                </div>
+            <h2 class="font-headline text-2xl md:text-3xl font-black uppercase text-white tracking-tighter mb-2">Mubtasim Munim</h2>
+            <p class="font-label text-primary font-bold uppercase tracking-widest mb-6 text-xs">AI EXPERIMENT BUILDER</p>
+            <div class="flex gap-3 mb-6">
+                <a class="w-10 h-10 md:w-12 md:h-12 bg-white border-4 border-black hard-shadow-sm flex items-center justify-center text-black hover:bg-primary transition-colors" href="mailto:fakirmunim8@gmail.com" aria-label="Email">
+                    <span class="material-symbols-outlined">alternate_email</span>
+                </a>
+                <a class="w-10 h-10 md:w-12 md:h-12 bg-white border-4 border-black hard-shadow-sm flex items-center justify-center text-black hover:bg-primary transition-colors" href="https://www.facebook.com/fakirmunim8" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                    <svg class="w-5 h-5 md:w-6 md:h-6 fill-current" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                </a>
+                <a class="w-10 h-10 md:w-12 md:h-12 bg-white border-4 border-black hard-shadow-sm flex items-center justify-center text-black hover:bg-primary transition-colors" href="https://www.instagram.com/fakir_munim_2/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg class="w-5 h-5 md:w-6 md:h-6 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                </a>
             </div>
-        </aside>
-
-        <!-- Chat Workspace -->
-        <div class="flex-1 flex flex-col justify-between h-full relative bg-gradient-to-b from-[#0e1322] to-[#080b14]">
-            
-            <header class="h-16 border-b border-slate-800/60 px-6 flex justify-between items-center shadow-sm backdrop-blur-md bg-[#0e1322]/80 z-10">
-                <div class="flex items-center gap-3">
-                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50 animate-pulse"></span>
-                    <h2 class="font-semibold text-sm tracking-tight text-white">Main Processing Pipeline</h2>
-                </div>
-                <div class="text-xs text-slate-400 bg-[#0f1524] px-3 py-1.5 border border-slate-800 rounded-lg">
-                    System Protocol: <span class="font-mono text-indigo-400">Stateless</span>
-                </div>
-            </header>
-
-            <main id="chatOutputWrapper" class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
-                <div id="matrixWelcomeLayout" class="max-w-2xl mx-auto text-center py-24 space-y-6">
-                    <div class="inline-flex bg-indigo-950/40 border border-indigo-900/40 px-3 py-1.5 rounded-full text-xs text-indigo-300 font-medium tracking-wide">
-                        🚀 Production Ready — GitHub Pages Core
-                    </div>
-                    <h2 class="text-3xl font-extrabold tracking-tight text-white lg:text-4xl bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-                        Aether Production Node
-                    </h2>
-                    <p class="text-slate-400 text-sm max-w-md mx-auto leading-relaxed font-light">
-                        Use <code class="font-mono bg-[#111726] text-pink-400 px-1.5 py-0.5 rounded border border-slate-800">/image [prompt]</code> for instant visual processing blocks.
-                    </p>
-                </div>
-            </main>
-
-            <!-- Input Dock -->
-            <footer class="p-6 bg-gradient-to-t from-[#080b14] via-[#080b14] to-transparent">
-                <div class="max-w-3xl mx-auto relative group">
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-15 group-focus-within:opacity-40 transition duration-300"></div>
-                    <div class="relative bg-[#0f1524] border border-slate-800 rounded-2xl flex items-end p-2 shadow-2xl focus-within:border-indigo-500/80 transition-all">
-                        <textarea id="mainInputField" rows="1" placeholder="Type a message or /image..."
-                            class="w-full bg-transparent text-slate-100 pl-4 pr-14 py-3 focus:outline-none resize-none max-h-40 custom-scrollbar text-sm leading-relaxed"
-                            onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); dispatchUserPayload(); }"></textarea>
-                        
-                        <button onclick="dispatchUserPayload()" class="absolute right-3 bottom-3 bg-gradient-to-tr from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white p-3 rounded-xl shadow-lg transition-all active:scale-95">
-                            <i class="fa-solid fa-arrow-up text-sm"></i>
-                        </button>
-                    </div>
-                </div>
-            </footer>
+            <button class="w-full bg-primary text-black font-headline font-black uppercase py-3 md:py-4 border-4 border-black hard-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all" onclick="toggleModal()">
+                Close Identity
+            </button>
         </div>
     </div>
+</div>
 
-    <!-- JavaScript Logic -->
-    <script>
-        // ==========================================
-        // PASTE YOUR PRIVATE OPENROUTER KEY DIRECTLY BELOW
-        // ==========================================
-        const SYSTEM_HARDCODED_KEY = "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";
+<!-- Header -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-8 py-3 md:py-4 bg-background border-b-4 border-black">
+    <div class="text-base md:text-xl font-black text-primary tracking-tighter font-headline uppercase flex items-center gap-2">
+        <span class="material-symbols-outlined text-xl md:text-2xl">bolt</span>
+        Mubtasim Munim
+    </div>
+    <nav class="hidden md:flex items-center font-headline uppercase tracking-tighter font-bold text-xs lg:text-sm gap-6 lg:gap-10">
+        <a class="nav-link flex items-center gap-2 transition-colors pb-1 text-on-background active" href="#work">
+            <span class="material-symbols-outlined text-base">work</span>Work
+        </a>
+        <a class="nav-link flex items-center gap-2 transition-colors pb-1 text-on-background" href="#labs">
+            <span class="material-symbols-outlined text-base">biotech</span>Labs
+        </a>
+        <a class="nav-link flex items-center gap-2 transition-colors pb-1 text-on-background" href="#arsenal">
+            <span class="material-symbols-outlined text-base">token</span>Arsenal
+        </a>
+        <a class="nav-link flex items-center gap-2 transition-colors pb-1 text-on-background" href="#log">
+            <span class="material-symbols-outlined text-base">psychology</span>Insights
+        </a>
+        <a class="nav-link flex items-center gap-2 transition-colors pb-1 text-on-background" href="#contact">
+            <span class="material-symbols-outlined text-base">mail</span>Contact
+        </a>
+    </nav>
+    <button class="w-10 h-10 border-4 border-black bg-parchment hard-shadow-sm flex items-center justify-center hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all" onclick="toggleModal()" aria-label="Open identity panel">
+        <span class="material-symbols-outlined text-black">account_circle</span>
+    </button>
+</header>
 
-        const FAILSAFE_MODEL_POOL = [
-            "meta-llama/llama-3.2-3b-instruct:free",
-            "google/gemma-2-9b-it:free",
-            "qwen/qwen-2.5-72b-instruct:free"
-        ];
+<main class="pt-16 md:pt-20 pb-16 md:pb-0">
+    <!-- Hero Section -->
+    <section class="min-h-[80vh] flex flex-col justify-center px-4 sm:px-8 md:px-16 border-b-4 border-black relative overflow-hidden bg-background" id="hero">
+        <div class="absolute top-20 right-10 opacity-5 pointer-events-none select-none">
+            <span class="material-symbols-outlined text-[15rem] sm:text-[25rem] md:text-[35rem]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+        </div>
+        <div class="z-10 max-w-4xl py-6 md:py-8">
+            <!-- Wrapped in a block-level container to guarantee a line break -->
+            <div class="block mb-4">
+                <span class="inline-block bg-primary text-black font-label font-bold px-3 py-1 border-2 border-black uppercase tracking-tighter text-xs md:text-sm">
+                    Fakir Scania
+                </span>
+            </div>
+            
+            <!-- Changed h1 to standard block display -->
+            <h1 class="block font-headline text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none tracking-tighter uppercase mb-4">
+                <span id="typewriter" class="break-words"></span><span class="block-cursor"></span>
+            </h1>
+            
+            <p class="font-body text-sm sm:text-base md:text-lg text-on-background opacity-80 max-w-2xl mb-6 md:mb-8 leading-relaxed">
+                Crafting digital soul through heavy borders, electric greens, and AI-driven experiments.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a class="bg-primary text-black font-headline font-black text-sm sm:text-base uppercase px-6 py-3 border-4 border-black hard-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-emerald transition-all" href="#work">
+                    View Work
+                </a>
+                <a class="bg-secondary text-white font-headline font-black text-sm sm:text-base uppercase px-6 py-3 border-4 border-black hard-shadow-sm hover:bg-parchment hover:text-black transition-colors" href="#log">
+                    AI Insights
+                </a>
+            </div>
+        </div>
+    </section>
 
-        let activeEngineMode = 'auto';
-
-        if(SYSTEM_HARDCODED_KEY && !SYSTEM_HARDCODED_KEY.includes("YOUR_")) {
-            document.getElementById('sidebarApiKey').value = SYSTEM_HARDCODED_KEY;
-        }
-
-        function toggleEngineMode(mode) {
-            activeEngineMode = mode;
-            const bAuto = document.getElementById('modeAuto');
-            const bManual = document.getElementById('modeManual');
-            const confBox = document.getElementById('modelConfigBox');
-            const manInput = document.getElementById('manualModelInput');
-
-            if (mode === 'auto') {
-                bAuto.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-md";
-                bManual.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-400 hover:text-white";
-                confBox.firstElementChild.classList.remove('hidden');
-                manInput.classList.add('hidden');
-            } else {
-                bManual.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-md";
-                bAuto.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-400 hover:text-white";
-                confBox.firstElementChild.classList.add('hidden');
-                manInput.classList.remove('hidden');
-            }
-        }
-
-        async function dispatchUserPayload() {
-            const inputField = document.getElementById('mainInputField');
-            const userText = inputField.value.trim();
-            const canvas = document.getElementById('chatOutputWrapper');
-            const dynamicWelcome = document.getElementById('matrixWelcomeLayout');
-
-            let runtimeKey = document.getElementById('sidebarApiKey').value.trim() || SYSTEM_HARDCODED_KEY;
-
-            if (!userText) return;
-            if (dynamicWelcome) dynamicWelcome.remove();
-
-            inputField.value = '';
-            inputField.style.height = 'auto';
-
-            appendUIMessage(userText, 'user');
-
-            if (userText.startsWith('/image')) {
-                const promptString = userText.replace('/image', '').trim();
-                if (!promptString) {
-                    appendUIMessage("Warning: Prompt cannot be empty. Example: `/image futuristic city`", 'user');
-                    return;
-                }
-                appendUIImageBlock(promptString);
-                return;
-            }
-
-            const uniqueAIMsgId = 'ai-node-' + Date.now();
-            appendUIPlaceholder(uniqueAIMsgId);
-
-            let primaryTargetModel = FAILSAFE_MODEL_POOL[0];
-            if (activeEngineMode === 'manual') {
-                primaryTargetModel = document.getElementById('manualModelInput').value.trim();
-            }
-
-            await processingClusterEngine(userText, primaryTargetModel, runtimeKey, uniqueAIMsgId);
-            canvas.scrollTop = canvas.scrollHeight;
-        }
-
-        async function processingClusterEngine(payloadText, modelTarget, apiKeyString, DOMNodeId) {
-            const placeholderNode = document.getElementById(DOMNodeId);
-            let evaluationPool = (activeEngineMode === 'auto') ? [...FAILSAFE_MODEL_POOL] : [modelTarget];
-
-            if (!apiKeyString || apiKeyString.includes("YOUR_")) {
-                await engageBackupCloudPipeline(payloadText, placeholderNode, "Key Missing");
-                return;
-            }
-
-            for (let index = 0; index < evaluationPool.length; index++) {
-                const ActiveModelIteration = evaluationPool[index];
-                
-                if (activeEngineMode === 'auto' && index > 0) {
-                    placeholderNode.innerHTML = `<i class="fa-solid fa-arrows-spin animate-spin mr-2 text-amber-400"></i>Routing to backup path (${ActiveModelIteration.split('/').pop()})...`;
-                }
-
-                try {
-                    // FIX: Standard compliance headers. Stripped custom/referer objects that trip GitHub Pages CSP policies.
-                    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${apiKeyString}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            "model": ActiveModelIteration,
-                            "messages": [{ "role": "user", "content": payloadText }]
-                        })
-                    });
-
-                    const responsePayloadData = await response.json();
-
-                    if (response.status === 429 || response.status === 402 || responsePayloadData.error) {
-                        continue; 
-                    }
-
-                    if (responsePayloadData.choices && responsePayloadData.choices[0] && responsePayloadData.choices[0].message) {
-                        finalizeUIRender(placeholderNode, responsePayloadData.choices[0].message.content, "OpenRouter Hub Cluster");
-                        return; 
-                    }
-
-                } catch (connectionPipelineFault) {
-                    console.error("Network step error:", connectionPipelineFault);
-                    continue; 
-                }
-            }
-
-            await engageBackupCloudPipeline(payloadText, placeholderNode, "OpenRouter Array Exhausted");
-        }
-
-        async function engageBackupCloudPipeline(userQuery, DOMTargetNode, failureReason) {
-            DOMTargetNode.innerHTML = `
-                <div class="flex flex-col gap-2">
-                    <span class="text-xs text-amber-400 font-semibold flex items-center gap-1.5 bg-amber-950/30 border border-amber-900/40 w-fit px-2.5 py-1 rounded-lg">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Path Swapped (${failureReason})
-                    </span>
-                    <span class="text-slate-400 text-xs">
-                        <i class="fa-solid fa-circle-notch animate-spin mr-2 text-indigo-400"></i>Generating backup solution stream...
-                    </span>
+    <!-- Vibe Gallery (Section 1) -->
+    <section class="mesh-gradient py-12 md:py-16 px-4 sm:px-8 md:px-16 border-b-4 border-black" id="work">
+        <div class="mb-10 flex flex-col md:flex-row justify-between items-start gap-4">
+            <div>
+                <h2 class="font-headline text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter text-left">Vibe Gallery</h2>
+                <p class="font-body text-primary font-bold mt-2 uppercase text-xs">Curated experiments in digital chaos</p>
+            </div>
+            <div class="font-headline font-black text-6xl opacity-10 leading-none hidden md:block select-none">01</div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+            <!-- Large Card -->
+            <div class="md:col-span-12 lg:col-span-8 bg-parchment border-4 border-black hard-shadow hover-lift p-4 group">
+                <div class="relative overflow-hidden aspect-video bg-black border-4 border-black mb-6">
+                    <img alt="Synthetic Soul Engine screenshot" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbjD8o4qMeL3BezkPAA2iBCkK2EyZiJhXh9a7qvnAfpig90RH99JzlYztXTu6ZXPGY4dp6u7k2EhMi9l_Ld-Kby1mnLyUtrvs_OFS-7xsVJz52a7VRGK5OzDbCah8jZxIdREZ4gi2_yUvgB_55ZV--8MBcWiZbO1G_gKFf6vPlgIn-2T_-PSZwTYRzFy3hiFeR1p1l0s7Z0p6Z2y1bGQUCpHFa1l0qXuqnTv5JS05X_SQGzxFYcaYeaOIxi2pjxni3eGjRhObwSS8"/>
+                    <div class="absolute top-4 right-4 bg-primary text-black font-label px-3 py-1 border-2 border-black text-xs font-bold uppercase">Featured Case Study</div>
                 </div>
-            `;
-
-            try {
-                const networkFetchResponse = await fetch("https://text.pollinations.ai/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        "messages": [{ "role": "user", "content": userQuery }]
-                    })
-                });
-
-                if (!networkFetchResponse.ok) throw new Error("Cloud link variant fault");
-
-                const dynamicRawTextResponse = await networkFetchResponse.text();
-                finalizeUIRender(DOMTargetNode, dynamicRawTextResponse, "Backup Processing Cluster");
-
-            } catch (terminalError) {
-                DOMTargetNode.className = "p-4 rounded-2xl text-sm bg-rose-950/30 text-rose-400 border border-rose-900/50 rounded-tl-none font-medium flex items-center gap-2";
-                DOMTargetNode.innerHTML = `<i class="fa-solid fa-radiation text-rose-500 text-lg"></i> Network communication dropped. Ensure browser extension scripts aren't blocking external fetch pipelines.`;
-            }
-        }
-
-        function finalizeUIRender(targetElementNode, completeRawMarkdownPayload, engineIdentifierLabel) {
-            targetElementNode.className = "p-5 rounded-2xl text-sm bg-[#0f1524] text-slate-200 border border-slate-800/80 rounded-tl-none space-y-4 shadow-xl";
-            
-            const dynamicColorBadge = engineIdentifierLabel.includes("OpenRouter") 
-                ? "bg-indigo-950/60 text-indigo-400 border-indigo-900/40" 
-                : "bg-amber-950/60 text-amber-400 border-amber-900/40";
-            
-            const parsedHTMLOutput = marked.parse(completeRawMarkdownPayload);
-
-            targetElementNode.innerHTML = `
-                <div class="markdown-body text-slate-200 leading-relaxed font-normal">${parsedHTMLOutput}</div>
-                <div class="pt-3 border-t border-slate-800/60 flex justify-end">
-                    <span class="text-[9px] font-mono tracking-wider uppercase px-2 py-1 rounded border ${dynamicColorBadge}">
-                        Source: ${engineIdentifierLabel}
-                    </span>
+                <h3 class="font-headline text-xl sm:text-2xl font-black uppercase text-black mb-2">Synthetic Soul Engine</h3>
+                <p class="font-body text-black/70 mb-4 max-w-xl text-xs sm:text-sm">Autonomous AI agent generating procedurally generated art based on real-time vibe-shifts.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="border-2 border-black bg-primary/20 text-black font-label text-[10px] font-bold px-3 py-1 uppercase">React</span>
+                    <span class="border-2 border-black bg-primary/20 text-black font-label text-[10px] font-bold px-3 py-1 uppercase">OpenAI</span>
+                    <span class="border-2 border-black bg-primary/20 text-black font-label text-[10px] font-bold px-3 py-1 uppercase">Canvas</span>
                 </div>
-            `;
-        }
+            </div>
 
-        function appendUIMessage(messageContent, senderType) {
-            const viewportBox = document.getElementById('chatOutputWrapper');
-            const messageRowWrapper = document.createElement('div');
-            messageRowWrapper.className = `flex w-full ${senderType === 'user' ? 'justify-end' : 'justify-start'}`;
-
-            const isClientUser = senderType === 'user';
-            
-            messageRowWrapper.innerHTML = `
-                <div class="max-w-2xl flex gap-3.5 ${isClientUser ? 'flex-row-reverse text-right' : 'text-left'}">
-                    <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-[10px] font-bold tracking-wider select-none ${isClientUser ? 'bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-md' : 'bg-[#0f1524] text-indigo-400 border border-slate-800'}">
-                        ${isClientUser ? 'USER' : 'CORE'}
+            <!-- Side Card 1 -->
+            <div class="md:col-span-6 lg:col-span-4 bg-primary border-4 border-black hard-shadow hover-lift p-6 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 bg-black flex items-center justify-center border-4 border-black mb-6">
+                        <span class="material-symbols-outlined text-primary text-2xl">token</span>
                     </div>
-                    <div class="p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${isClientUser ? 'bg-indigo-600/10 text-indigo-100 border border-indigo-500/30 rounded-tr-none' : 'bg-[#0f1524] text-slate-200 border border-slate-800 rounded-tl-none'} shadow-md">
-                        ${messageContent}
+                    <h3 class="font-headline text-lg sm:text-xl font-black text-black uppercase mb-2">Vibe Check API</h3>
+                    <p class="font-body text-black/80 text-xs sm:text-sm">Quantifying qualitative 'vibes' through sentiment analysis and color theory mapping.</p>
+                </div>
+                <a class="mt-6 font-headline font-bold uppercase text-black flex items-center gap-2 group text-xs sm:text-sm" href="#">
+                    Explore <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Side Card 2 -->
+            <div class="md:col-span-6 lg:col-span-4 bg-secondary border-4 border-black hard-shadow hover-lift p-6">
+                <h3 class="font-headline text-lg sm:text-xl font-black text-white uppercase mb-2">Brutalist.UI</h3>
+                <p class="font-body text-white/70 mb-4 text-xs sm:text-sm">A component library for the rebellious. 4pt borders by default.</p>
+                <div class="bg-black/40 h-32 border-2 border-white/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-4xl text-white/20">deployed_code</span>
+                </div>
+            </div>
+
+            <!-- Bottom Card -->
+            <div class="md:col-span-12 lg:col-span-8 bg-parchment border-4 border-black hard-shadow hover-lift p-6 flex flex-col md:flex-row gap-6 items-center">
+                <div class="md:w-1/2 w-full">
+                    <h3 class="font-headline text-xl sm:text-2xl font-black uppercase text-black mb-2">Automated Anarchy</h3>
+                    <p class="font-body text-black/70 mb-4 text-xs sm:text-sm">Workflow optimization for creative rebels using Google Apps Script as the backbone of existence.</p>
+                    <button class="w-full sm:w-auto bg-primary text-black font-headline font-bold uppercase px-6 py-3 border-4 border-black hard-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                        View Demo
+                    </button>
+                </div>
+                <div class="md:w-1/2 w-full aspect-video border-4 border-black overflow-hidden bg-black">
+                    <img alt="Automated Anarchy demonstration screenshot" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChwPD2w5Jq2h34P1XTmzGYQzp1WZqxYggEulUlt0NP_tOKQlHY2HJK9go8kIRpjnVavpNcc02Wq8M8pn2fWGhCS4FqFQVn5CwSOLcWGnK2VhltIHoqAsVxXp3S8VHyFVQ30jMZkJktGejStHrpkXzsiLemmKnrGwQEWN9eRrwr1us35nkVJfnpk7SuwJaATdacmKjoniReSWnnb5MWWNVjHUl6tanZUFdIAlBCUbqwgNwY-FWzj5nXi1S9q9n4udisCKLVZvprJ-o"/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAKIR Lab (Section 2) -->
+    <section class="bg-background py-12 md:py-16 px-4 sm:px-8 md:px-16 border-b-4 border-black overflow-hidden" id="labs">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="font-headline text-3xl sm:text-4xl md:text-5xl font-black uppercase mb-10 tracking-tighter text-left">
+                FAKIR <span class="text-primary">Lab</span>
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-12 mb-10">
+                <div class="group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 sm:w-28 sm:h-28 bg-secondary border-4 border-black flex items-center justify-center hard-shadow group-hover:bg-primary group-hover:rotate-6 transition-all duration-300 rotate-3d cursor-pointer">
+                        <span class="material-symbols-outlined text-3xl sm:text-5xl text-on-background group-hover:text-black transition-colors">table_chart</span>
+                    </div>
+                    <p class="font-headline font-black uppercase mt-4 text-sm sm:text-lg">Google Sheets</p>
+                    <span class="font-label text-[10px] text-primary uppercase font-bold tracking-widest mt-1">Database</span>
+                </div>
+                <div class="group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 sm:w-28 sm:h-28 bg-secondary border-4 border-black flex items-center justify-center hard-shadow group-hover:bg-primary group-hover:-rotate-6 transition-all duration-300 rotate-3d cursor-pointer">
+                        <span class="material-symbols-outlined text-3xl sm:text-5xl text-on-background group-hover:text-black transition-colors">terminal</span>
+                    </div>
+                    <p class="font-headline font-black uppercase mt-4 text-sm sm:text-lg">Apps Script</p>
+                    <span class="font-label text-[10px] text-primary uppercase font-bold tracking-widest mt-1">Backbone</span>
+                </div>
+                <div class="group flex flex-col items-center text-center col-span-2 md:col-span-1">
+                    <div class="w-20 h-20 sm:w-28 sm:h-28 bg-secondary border-4 border-black flex items-center justify-center hard-shadow mx-auto group-hover:bg-primary group-hover:rotate-6 transition-all duration-300 rotate-3d cursor-pointer">
+                        <span class="material-symbols-outlined text-3xl sm:text-5xl text-on-background group-hover:text-black transition-colors">psychology</span>
+                    </div>
+                    <p class="font-headline font-black uppercase mt-4 text-sm sm:text-lg">AI Integration</p>
+                    <span class="font-label text-[10px] text-primary uppercase font-bold tracking-widest mt-1">Intelligence</span>
+                </div>
+            </div>
+            
+            <div class="p-6 md:p-8 bg-secondary border-4 border-primary hard-shadow-emerald text-left reveal hover:scale-[1.01] transition-transform">
+                <p class="font-body text-sm sm:text-base md:text-lg text-primary leading-relaxed">
+                    "The FAKIR_LAB is where I strip away the bloat of modern development and return to structural purity. I use spreadsheets as relational databases and scripts as nervous systems to build tools that feel like physical objects."
+                </p>
+                <p class="font-headline font-black uppercase text-lg sm:text-xl mt-6">— Mubtasim Munim</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Arsenal -->
+    <section class="bg-background py-12 md:py-16 px-4 sm:px-8 md:px-16 border-b-4 border-black" id="arsenal">
+        <div class="max-w-6xl mx-auto">
+            <div class="mb-10 reveal">
+                <h2 class="font-headline text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter">The AI <span class="text-primary italic">Arsenal</span></h2>
+                <div class="w-24 h-2 bg-primary mt-3"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- ChatGPT -->
+                <div class="arsenal-card reveal stagger-1 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">chat</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">ChatGPT</h3>
+                    </div>
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Creative Brainstorming &amp; Rapid Iteration.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">OpenAI</span></div>
                     </div>
                 </div>
-            `;
-            viewportBox.appendChild(messageRowWrapper);
-            viewportBox.scrollTop = viewportBox.scrollHeight;
-        }
-
-        function appendUIPlaceholder(idStringValue) {
-            const viewportBox = document.getElementById('chatOutputWrapper');
-            const messageRowWrapper = document.createElement('div');
-            messageRowWrapper.className = "flex w-full justify-start";
-            messageRowWrapper.innerHTML = `
-                <div class="max-w-2xl flex gap-3.5 text-left">
-                    <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-[#0f1524] text-indigo-400 border border-slate-800 text-[10px] font-bold select-none">
-                        CORE
+                <!-- Claude -->
+                <div class="arsenal-card reveal stagger-2 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">psychology</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">Claude</h3>
                     </div>
-                    <div id="${idStringValue}" class="p-4 rounded-2xl text-sm bg-[#0f1524] text-slate-400 border border-slate-800 rounded-tl-none shadow-md flex items-center gap-2">
-                        <i class="fa-solid fa-circle-notch animate-spin text-indigo-500"></i> Linking web transaction data...
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Human-like Nuance &amp; Creative Writing.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">Anthropic</span></div>
                     </div>
                 </div>
-            `;
-            viewportBox.appendChild(messageRowWrapper);
-            viewportBox.scrollTop = viewportBox.scrollHeight;
-        }
-
-        function appendUIImageBlock(promptStringValue) {
-            const viewportBox = document.getElementById('chatOutputWrapper');
-            const messageRowWrapper = document.createElement('div');
-            messageRowWrapper.className = "flex w-full justify-start";
-            
-            const randomlyGeneratedSeed = Math.floor(Math.random() * 10000000);
-            const absoluteImageUrlAddress = `https://image.pollinations.ai/p/${encodeURIComponent(promptStringValue)}?width=1024&height=1024&seed=${randomlyGeneratedSeed}`;
-
-            messageRowWrapper.innerHTML = `
-                <div class="max-w-2xl flex gap-3.5 text-left">
-                    <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-[#0f1524] text-indigo-400 border border-slate-800 text-[10px] font-bold select-none">
-                        CORE
+                <!-- Gemini -->
+                <div class="arsenal-card reveal stagger-3 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">google_plus_reshare</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">Gemini</h3>
                     </div>
-                    <div class="p-4 rounded-2xl text-sm bg-[#0f1524] border border-slate-800 rounded-tl-none space-y-3 shadow-xl max-w-md">
-                        <p class="text-xs text-slate-400 italic font-medium flex items-center gap-1.5">
-                            <i class="fa-solid fa-camera-retro text-indigo-400"></i> Output Matrix: "${promptStringValue}"
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Multi-modal Mastery &amp; Google Integration.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">Google</span></div>
+                    </div>
+                </div>
+                <!-- DeepSeek -->
+                <div class="arsenal-card reveal stagger-1 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">query_stats</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">DeepSeek</h3>
+                    </div>
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Logic &amp; Reasoning &amp; Technical Deep-Dives.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">Reasoning</span></div>
+                    </div>
+                </div>
+                <!-- Qwen -->
+                <div class="arsenal-card reveal stagger-2 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">precision_manufacturing</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">Qwen</h3>
+                    </div>
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Efficient LLM for Coding &amp; Automation.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">Alibaba</span></div>
+                    </div>
+                </div>
+                <!-- Manus -->
+                <div class="arsenal-card reveal stagger-3 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">architecture</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">Manus</h3>
+                    </div>
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Technical Accuracy &amp; Complex Analysis.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">Technical</span></div>
+                    </div>
+                </div>
+                <!-- Clawbolt -->
+                <div class="arsenal-card reveal stagger-1 relative group h-[260px] md:h-[280px] bg-parchment border-4 border-black hard-shadow-emerald overflow-hidden cursor-pointer sm:col-span-2 lg:col-span-1">
+                    <div class="h-full w-full flex flex-col items-center justify-center p-6 scanline text-center">
+                        <span class="material-symbols-outlined text-5xl text-black mb-4">bolt</span>
+                        <h3 class="font-headline font-black text-lg md:text-xl uppercase text-black">Clawbolt</h3>
+                    </div>
+                    <div class="slide-up-content absolute inset-0 bg-secondary p-6 flex flex-col justify-center border-t-4 border-black">
+                        <h4 class="font-headline font-bold text-primary uppercase text-sm mb-1">Core Superpower</h4>
+                        <p class="font-body text-white text-xs sm:text-sm leading-snug">Rapid Prototyping &amp; High-Frequency Vibe Checks.</p>
+                        <div class="mt-4"><span class="text-[10px] border border-primary text-primary px-2 py-0.5 font-bold uppercase">Speed</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Insights Section -->
+    <section class="bg-parchment py-12 md:py-16 px-4 sm:px-8 md:px-16 border-b-4 border-black" id="log">
+        <div class="max-w-6xl mx-auto">
+            <div class="mb-10 flex flex-col md:flex-row justify-between items-start gap-4">
+                <div>
+                    <h2 class="font-headline text-3xl sm:text-4xl md:text-5xl font-black uppercase text-black leading-none">AI Insights</h2>
+                    <p class="font-body text-black/60 text-xs sm:text-sm mt-2">Strategic logic, automated pipelines, and algorithmic rebellion.</p>
+                </div>
+                <div class="w-full md:w-32 h-2 bg-black mt-2"></div>
+            </div>
+            
+            <!-- Insight Cards Container -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8" id="insights-grid">
+                <!-- Card 1 -->
+                <div class="bg-white border-4 border-black p-4 hard-shadow hover-lift flex flex-col justify-between h-full transition-all">
+                    <div>
+                        <div class="relative overflow-hidden aspect-video bg-black border-2 border-black mb-4">
+                            <img alt="The Synthesis Protocol" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop"/>
+                            <div class="absolute bottom-2 left-2 bg-secondary text-white font-label px-2 py-0.5 text-[9px] font-bold uppercase">Research</div>
+                        </div>
+                        <span class="font-label font-bold text-black/50 text-xs block mb-1">JUNE 14, 2026</span>
+                        <h3 class="font-headline text-base sm:text-lg font-black uppercase text-black mb-2">The Synthesis Protocol</h3>
+                        <p class="font-body text-black/70 text-xs sm:text-sm leading-relaxed">
+                            Developing architectural boundaries for automated system workflows using autonomous agent nodes.
                         </p>
-                        <div class="relative bg-[#070a12] rounded-xl overflow-hidden border border-slate-800 shadow-inner group">
-                            <img src="${absoluteImageUrlAddress}" alt="${promptStringValue}" class="w-full h-auto block rounded-xl transition-all duration-500" loading="lazy">
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-black/10 flex justify-between items-center">
+                        <span class="text-[10px] font-bold bg-primary/20 text-black px-2 py-1 uppercase border border-black">Agents</span>
+                        <span class="material-symbols-outlined text-black text-sm">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white border-4 border-black p-4 hard-shadow hover-lift flex flex-col justify-between h-full transition-all">
+                    <div>
+                        <div class="relative overflow-hidden aspect-video bg-black border-2 border-black mb-4">
+                            <img alt="Brutalist Web Layouts" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=600&auto=format&fit=crop"/>
+                            <div class="absolute bottom-2 left-2 bg-secondary text-white font-label px-2 py-0.5 text-[9px] font-bold uppercase">System</div>
+                        </div>
+                        <span class="font-label font-bold text-black/50 text-xs block mb-1">MAY 29, 2026</span>
+                        <h3 class="font-headline text-base sm:text-lg font-black uppercase text-black mb-2">Brutalist Systems Design</h3>
+                        <p class="font-body text-black/70 text-xs sm:text-sm leading-relaxed">
+                            How returning to thick borders, limited scales, and absolute weights improves interface coherence.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-black/10 flex justify-between items-center">
+                        <span class="text-[10px] font-bold bg-primary/20 text-black px-2 py-1 uppercase border border-black">Core CSS</span>
+                        <span class="material-symbols-outlined text-black text-sm">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white border-4 border-black p-4 hard-shadow hover-lift flex flex-col justify-between h-full transition-all">
+                    <div>
+                        <div class="relative overflow-hidden aspect-video bg-black border-2 border-black mb-4">
+                            <img alt="LLM Backends" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=600&auto=format&fit=crop"/>
+                            <div class="absolute bottom-2 left-2 bg-secondary text-white font-label px-2 py-0.5 text-[9px] font-bold uppercase">AI Code</div>
+                        </div>
+                        <span class="font-label font-bold text-black/50 text-xs block mb-1">APRIL 11, 2026</span>
+                        <h3 class="font-headline text-base sm:text-lg font-black uppercase text-black mb-2">Agents of Digital Chaos</h3>
+                        <p class="font-body text-black/70 text-xs sm:text-sm leading-relaxed">
+                            Orchestrating raw LLM API nodes directly within Google Apps Script without massive framework dependencies.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-black/10 flex justify-between items-center">
+                        <span class="text-[10px] font-bold bg-primary/20 text-black px-2 py-1 uppercase border border-black">Backends</span>
+                        <span class="material-symbols-outlined text-black text-sm">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Card 4 (Hidden initially) -->
+                <div class="bg-white border-4 border-black p-4 hard-shadow hover-lift hidden flex-col justify-between h-full transition-all extra-insight">
+                    <div>
+                        <div class="relative overflow-hidden aspect-video bg-black border-2 border-black mb-4">
+                            <img alt="Database structures" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=600&auto=format&fit=crop"/>
+                            <div class="absolute bottom-2 left-2 bg-secondary text-white font-label px-2 py-0.5 text-[9px] font-bold uppercase">Workflows</div>
+                        </div>
+                        <span class="font-label font-bold text-black/50 text-xs block mb-1">MARCH 19, 2026</span>
+                        <h3 class="font-headline text-base sm:text-lg font-black uppercase text-black mb-2">The Google Pipeline</h3>
+                        <p class="font-body text-black/70 text-xs sm:text-sm leading-relaxed">
+                            Standardizing serverless operations, micro-databases, and forms using Google Sheets structured tables.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-black/10 flex justify-between items-center">
+                        <span class="text-[10px] font-bold bg-primary/20 text-black px-2 py-1 uppercase border border-black">Pipelines</span>
+                        <span class="material-symbols-outlined text-black text-sm">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Card 5 (Hidden initially) -->
+                <div class="bg-white border-4 border-black p-4 hard-shadow hover-lift hidden flex-col justify-between h-full transition-all extra-insight">
+                    <div>
+                        <div class="relative overflow-hidden aspect-video bg-black border-2 border-black mb-4">
+                            <img alt="Sovereign AI models" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=600&auto=format&fit=crop"/>
+                            <div class="absolute bottom-2 left-2 bg-secondary text-white font-label px-2 py-0.5 text-[9px] font-bold uppercase">Systems</div>
+                        </div>
+                        <span class="font-label font-bold text-black/50 text-xs block mb-1">FEB 05, 2026</span>
+                        <h3 class="font-headline text-base sm:text-lg font-black uppercase text-black mb-2">Sovereign Intelligence</h3>
+                        <p class="font-body text-black/70 text-xs sm:text-sm leading-relaxed">
+                            Rebalancing personal computing stacks by hosting local open models to safeguard individual digital identities.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-black/10 flex justify-between items-center">
+                        <span class="text-[10px] font-bold bg-primary/20 text-black px-2 py-1 uppercase border border-black">Sovereignty</span>
+                        <span class="material-symbols-outlined text-black text-sm">arrow_forward</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Show More Toggle Button -->
+            <div class="mt-12 flex justify-center">
+                <button id="toggle-insights-btn" onclick="toggleInsights()" class="bg-black text-white font-headline font-black uppercase px-8 py-3.5 border-4 border-black hard-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center gap-2">
+                    Show More Insights <span class="material-symbols-outlined transition-transform duration-300" id="toggle-arrow">expand_more</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Drop a Message (Section 4) -->
+    <section class="bg-background py-12 md:py-16 px-4 sm:px-8 md:px-16 border-b-4 border-black" id="contact">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+            <div class="reveal">
+                <!-- Reduced layout sizes for neat viewport containment on 1080p and laptop screens -->
+                <h2 class="font-headline text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter mb-4 leading-none text-left">Drop a <br/><span class="text-primary">Message</span>.</h2>
+                <p class="font-body text-base sm:text-xl text-on-background opacity-80 mb-6">The line is open. Send a message to instantly log a connection into our database system.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Email Card -->
+                    <div onclick="window.location.href='mailto:fakirmunim8@gmail.com'" class="flex items-center gap-4 p-4 border-4 border-black bg-surface-container-high hard-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-sm-emerald transition-all text-on-background cursor-pointer group">
+                        <span class="material-symbols-outlined text-2xl text-primary font-bold group-hover:scale-110 transition-transform">alternate_email</span>
+                        <div class="overflow-hidden">
+                            <p class="font-label uppercase font-black text-[9px] opacity-60">Email</p>
+                            <p class="font-headline font-bold text-xs uppercase truncate">fakirmunim8@gmail.com</p>
+                        </div>
+                    </div>
+                    <!-- Instagram Card -->
+                    <a class="flex items-center gap-4 p-4 border-4 border-black bg-surface-container-high hard-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-sm-emerald transition-all text-on-background group" href="https://www.instagram.com/fakir_munim_2/" target="_blank" rel="noopener noreferrer">
+                        <svg class="w-6 h-6 text-primary fill-current group-hover:scale-110 transition-transform" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                        <div class="overflow-hidden">
+                            <p class="font-label uppercase font-black text-[9px] opacity-60">Instagram</p>
+                            <p class="font-headline font-bold text-xs truncate">@fakir_munim_2</p>
+                        </div>
+                    </a>
+                    <!-- Facebook Card -->
+                    <a class="flex items-center gap-4 p-4 border-4 border-black bg-surface-container-high hard-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-sm-emerald transition-all text-on-background group" href="https://www.facebook.com/fakirmunim8" target="_blank" rel="noopener noreferrer">
+                        <svg class="w-6 h-6 text-primary fill-current group-hover:scale-110 transition-transform" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                        <div class="overflow-hidden">
+                            <p class="font-label uppercase font-black text-[9px] opacity-60">Facebook</p>
+                            <p class="font-headline font-bold text-xs truncate">Mubtasim Munim</p>
+                        </div>
+                    </a>
+                    <!-- Base Card -->
+                    <div class="flex items-center gap-4 p-4 border-4 border-black bg-surface-container-high hard-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-sm-emerald transition-all text-on-background group cursor-pointer">
+                        <span class="material-symbols-outlined text-2xl text-primary font-bold group-hover:scale-110 transition-transform">location_on</span>
+                        <div class="overflow-hidden">
+                            <p class="font-label uppercase font-black text-[9px] opacity-60">Base</p>
+                            <p class="font-headline font-bold text-xs truncate">Jashore, BD</p>
                         </div>
                     </div>
                 </div>
-            `;
-            viewportBox.appendChild(messageRowWrapper);
-            viewportBox.scrollTop = viewportBox.scrollHeight;
+            </div>
+            
+            <div class="bg-surface-container-lowest border-4 border-black p-5 md:p-8 hard-shadow-emerald text-white reveal">
+                <!-- Forms linked natively to AJAX script loader -->
+                <form class="space-y-4 md:space-y-6" id="signal-form">
+                    <div>
+                        <label class="block font-headline font-black uppercase mb-1.5 text-sm md:text-base">Subject</label>
+                        <input name="subject" class="w-full bg-parchment border-4 border-black p-3.5 text-black focus:border-primary focus:ring-0 transition-all font-body text-sm" placeholder="GIVE IT A TITLE" type="text" required/>
+                    </div>
+                    <div>
+                        <label class="block font-headline font-black uppercase mb-1.5 text-sm md:text-base">Your Email</label>
+                        <input name="email" class="w-full bg-parchment border-4 border-black p-3.5 text-black focus:border-primary focus:ring-0 transition-all font-body text-sm" placeholder="ENTER YOUR ENCRYPTION SIGNAL EMAIL" type="email" required/>
+                    </div>
+                    <div>
+                        <label class="block font-headline font-black uppercase mb-1.5 text-sm md:text-base">Your Signal</label>
+                        <textarea name="message" class="w-full bg-gradient-to-br from-[#301934] to-[#19101b] border-4 border-black p-3.5 text-primary focus:border-primary focus:ring-0 transition-all font-body h-32 placeholder-primary/40 text-sm" placeholder="TRANSMIT YOUR MESSAGE..." required></textarea>
+                    </div>
+                    <button type="submit" id="submit-btn" class="w-full bg-primary text-black font-headline font-black text-lg md:text-xl uppercase py-4 border-4 border-black hard-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                        Launch Signal
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Robust Footer -->
+    <footer class="bg-black text-white border-t-4 border-black pt-12 pb-16 md:pb-12 overflow-hidden">
+        <!-- Footer Marquee inside container -->
+        <div class="marquee-container mb-12">
+            <div class="marquee-content gap-6" id="marquee-track">
+                <!-- Dynamically Rendered Content -->
+            </div>
+        </div>
+
+        <!-- Footer Grid Content -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-8 md:px-16 grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
+            <!-- Brand & Identity Section -->
+            <div class="md:col-span-5 flex flex-col items-start gap-3">
+                <div class="text-lg md:text-xl font-black text-primary tracking-tighter font-headline uppercase flex items-center gap-2">
+                    <span class="material-symbols-outlined text-xl md:text-2xl">bolt</span>
+                    Mubtasim Munim
+                </div>
+                <p class="font-body text-white/60 text-xs max-w-sm">
+                    A digital experiment in design, code, and direct execution. Combining industrial brutalism with functional, high-velocity logic stack architectures.
+                </p>
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="material-symbols-outlined text-primary text-xs">location_on</span>
+                    <span class="font-label text-[10px] uppercase tracking-widest text-white/80">Jashore, Bangladesh</span>
+                </div>
+            </div>
+
+            <!-- Direct Quick Navigation Links -->
+            <div class="md:col-span-3">
+                <h4 class="font-headline font-bold text-xs uppercase tracking-[0.2em] text-primary mb-4">Navigations</h4>
+                <ul class="space-y-2 font-headline text-xs uppercase font-bold text-white/80">
+                    <li><a class="hover:text-primary transition-colors block py-1" href="#work">Work</a></li>
+                    <li><a class="hover:text-primary transition-colors block py-1" href="#labs">Labs</a></li>
+                    <li><a class="hover:text-primary transition-colors block py-1" href="#arsenal">Arsenal</a></li>
+                    <li><a class="hover:text-primary transition-colors block py-1" href="#log">Insights</a></li>
+                </ul>
+            </div>
+
+            <!-- Enhanced Social/Direct Contact Integration -->
+            <div class="md:col-span-4 flex flex-col gap-4">
+                <h4 class="font-headline font-bold text-xs uppercase tracking-[0.2em] text-primary">Establish Signal</h4>
+                <p class="font-body text-xs text-white/50">Direct connection nodes available outside local host ports.</p>
+                
+                <!-- Email mailto box inside footer -->
+                <a href="mailto:fakirmunim8@gmail.com" class="flex items-center gap-2.5 px-4 py-2 border-2 border-primary bg-secondary/30 hover:bg-primary hover:text-black hover:border-black transition-all hard-shadow-sm-emerald font-headline font-black text-xs uppercase tracking-tighter">
+                    <span class="material-symbols-outlined text-base">alternate_email</span>
+                    fakirmunim8@gmail.com
+                </a>
+
+                <div class="flex flex-wrap gap-3 mt-1">
+                    <a class="w-10 h-10 bg-secondary hover:bg-primary border-2 border-primary hover:border-black flex items-center justify-center text-white hover:text-black transition-all hard-shadow-sm-emerald" href="https://www.facebook.com/fakirmunim8" target="_blank" rel="noopener noreferrer" aria-label="Facebook Link">
+                        <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                    </a>
+                    <a class="w-10 h-10 bg-secondary hover:bg-primary border-2 border-primary hover:border-black flex items-center justify-center text-white hover:text-black transition-all hard-shadow-sm-emerald" href="https://www.instagram.com/fakir_munim_2/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Link">
+                        <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center pt-8 border-t border-white/10 font-label text-[10px] md:text-xs uppercase tracking-[0.5em] text-white/40 px-6">
+            © 2026 Mubtasim Munim — All Rights Rebelled
+        </div>
+    </footer>
+</main>
+
+<!-- Bottom Navbar for Mobile responsiveness -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-background border-t-4 border-black z-[60] flex justify-around items-center h-16 px-4 pb-[safe-area-inset-bottom]">
+    <a class="nav-link-mobile flex flex-col items-center gap-1 text-primary" href="#work">
+        <span class="material-symbols-outlined text-lg">work</span>
+        <span class="text-[9px] font-black uppercase">Work</span>
+    </a>
+    <a class="nav-link-mobile flex flex-col items-center gap-1 text-on-background/60" href="#labs">
+        <span class="material-symbols-outlined text-lg">biotech</span>
+        <span class="text-[9px] font-black uppercase">Labs</span>
+    </a>
+    <a class="nav-link-mobile flex flex-col items-center gap-1 text-on-background/60" href="#arsenal">
+        <span class="material-symbols-outlined text-lg">token</span>
+        <span class="text-[9px] font-black uppercase">Arsenal</span>
+    </a>
+    <a class="nav-link-mobile flex flex-col items-center gap-1 text-on-background/60" href="#contact">
+        <span class="material-symbols-outlined text-lg">mail</span>
+        <span class="text-[9px] font-black uppercase">Mail</span>
+    </a>
+</nav>
+
+<script>
+    // Replace this string with your Google Apps Script Web App URL after deployment
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7G9j6Jio3I4pZBsBmuPPrSqLxvPtZZQHRasTqeVnxlTJqYZbiITjSLlDvjzz-u6b9Wg/exec";
+
+    // Typewriter with optimized animation parameters
+    const phrases = ["Welcome to FAKIR_EXPERIMENTS.", "I build AI pipelines.", "I am a VIBE ORCHESTRATOR."];
+    let phraseIdx = 0;
+    let charIdx = 0;
+    const typewriterEl = document.getElementById('typewriter');
+    
+    function type() {
+        if (!typewriterEl) return;
+        if (charIdx < phrases[phraseIdx].length) {
+            typewriterEl.textContent += phrases[phraseIdx].charAt(charIdx);
+            charIdx++;
+            setTimeout(type, 65);
+        } else {
+            setTimeout(erase, 2500);
+        }
+    }
+    
+    function erase() {
+        if (charIdx > 0) {
+            typewriterEl.textContent = phrases[phraseIdx].substring(0, charIdx - 1);
+            charIdx--;
+            setTimeout(erase, 35);
+        } else {
+            phraseIdx = (phraseIdx + 1) % phrases.length;
+            setTimeout(type, 400);
+        }
+    }
+    
+    // AI Insights Toggle Engine
+    let insightsExpanded = false;
+    function toggleInsights() {
+        const extraCards = document.querySelectorAll('.extra-insight');
+        const btn = document.getElementById('toggle-insights-btn');
+        const arrow = document.getElementById('toggle-arrow');
+        
+        insightsExpanded = !insightsExpanded;
+        
+        extraCards.forEach(card => {
+            if (insightsExpanded) {
+                card.classList.remove('hidden');
+                card.classList.add('flex');
+            } else {
+                card.classList.add('hidden');
+                card.classList.remove('flex');
+            }
+        });
+        
+        if (insightsExpanded) {
+            btn.innerHTML = `Show Less Insights <span class="material-symbols-outlined transition-transform duration-300 rotate-180" id="toggle-arrow">expand_less</span>`;
+        } else {
+            btn.innerHTML = `Show More Insights <span class="material-symbols-outlined transition-transform duration-300" id="toggle-arrow">expand_more</span>`;
+            // Scroll back up smoothly to insights section header
+            document.getElementById('log').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Google Apps Script Connection Bridge
+    const signalForm = document.getElementById('signal-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    if (signalForm) {
+        signalForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(signalForm);
+            const payload = {
+                subject: formData.get('subject'),
+                email: formData.get('email'),
+                message: formData.get('message')
+            };
+
+            // Loading state feedback
+            submitBtn.disabled = true;
+            submitBtn.textContent = "TRANSMITTING SIGNAL...";
+            submitBtn.classList.remove('bg-primary');
+            submitBtn.classList.add('bg-secondary', 'text-white');
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Essential for basic Apps Script cross-origin requests
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Clear input elements & display confirmation message
+                signalForm.reset();
+                submitBtn.textContent = "TRANSMISSION SUCCESSFUL!";
+                submitBtn.classList.add('bg-primary');
+                submitBtn.classList.remove('bg-secondary', 'text-white');
+                
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Launch Signal";
+                }, 4000);
+
+            } catch (error) {
+                console.error("Transmission error: ", error);
+                submitBtn.textContent = "TRANSMISSION ERROR. RETRY.";
+                submitBtn.classList.add('bg-red-500', 'text-white');
+                
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Launch Signal";
+                    submitBtn.classList.remove('bg-red-500', 'text-white');
+                    submitBtn.classList.add('bg-primary', 'text-black');
+                }, 4000);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        type();
+        
+        // Render Marquee Content
+        const marqueeTrack = document.getElementById('marquee-track');
+        if (marqueeTrack) {
+            const marqueeItems = [
+                { icon: 'alternate_email', text: 'CONNECT' },
+                { icon: 'share', text: 'COLLABORATE' },
+                { icon: 'bolt', text: 'INNOVATE' },
+                { icon: 'token', text: 'EXPERIMENT' },
+                { icon: 'code', text: 'DEVELOP' },
+                { icon: 'public', text: 'SOCIETY' },
+                { icon: 'rocket_launch', text: 'LAUNCH' }
+            ];
+            
+            let marqueeHtml = '';
+            for(let i = 0; i < 4; i++) {
+                marqueeItems.forEach(item => {
+                    marqueeHtml += `
+                        <div class="flex-shrink-0 flex items-center gap-3 bg-parchment border-4 border-black hard-shadow-sm-emerald px-6 py-3 m-2">
+                            <span class="material-symbols-outlined text-2xl text-black">${item.icon}</span>
+                            <span class="font-headline font-black text-black text-lg md:text-xl uppercase tracking-tighter">${item.text}</span>
+                        </div>
+                    `;
+                });
+            }
+            marqueeTrack.innerHTML = marqueeHtml;
+        }
+        
+        // Active Nav State Handling
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileLinks = document.querySelectorAll('.nav-link-mobile');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= (sectionTop - 250)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+
+            mobileLinks.forEach(link => {
+                link.classList.remove('text-primary');
+                link.classList.add('text-on-background/60');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-primary');
+                    link.classList.remove('text-on-background/60');
+                }
+            });
         }
 
-        const inputTextareaElement = document.getElementById('mainInputField');
-        inputTextareaElement.addEventListener("input", function() {
-            this.style.height = "auto";
-            this.style.height = (this.scrollHeight) + "px";
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+    });
+
+    // Modal Controller with safe overlay locks
+    const modalWrapper = document.getElementById('about-modal-wrapper');
+    const modalContent = document.getElementById('about-modal-content');
+    const overlay = document.getElementById('modal-overlay');
+    
+    function toggleModal() {
+        if (modalContent && overlay && modalWrapper) {
+            modalContent.classList.toggle('modal-enter');
+            modalContent.classList.toggle('modal-active');
+            overlay.classList.toggle('hidden');
+            modalWrapper.classList.toggle('pointer-events-none');
+            
+            if (modalContent.classList.contains('modal-active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+    }
+
+    // Intersection Observer for Reveal elements
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
         });
-    </script>
+    }, { threshold: 0.05 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
